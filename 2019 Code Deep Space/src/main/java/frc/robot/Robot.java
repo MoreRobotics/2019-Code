@@ -1,28 +1,39 @@
-/*----------------------------------------------------------------------------*/
+
 /* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
-/*----------------------------------------------------------------------------*/
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.IterativeRobot;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.InvertType;
+
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the IterativeRobot
+ * functions corresponding to each mode, as described in the Timed Robot
  * documentation. If you change the name of this class or the package after
  * creating this project, you must also update the build.gradle file in the
  * project.
  */
-public class Robot extends IterativeRobot {
+public class Robot extends TimedRobot {
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
+  TalonSRX mytalon0 = new TalonSRX(0);
+  TalonSRX mytalon1 = new TalonSRX(1);
+  TalonSRX mytalon2 = new TalonSRX(2);
+  TalonSRX mytalon3 = new TalonSRX(3);
+  Joystick joyLeft = new Joystick(0);
+  Joystick joyRight = new Joystick(3);
+  
 
   /**
    * This function is run when the robot is first started up and should be
@@ -33,6 +44,8 @@ public class Robot extends IterativeRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
+    System.out.println("1714");
+
   }
 
   /**
@@ -71,6 +84,7 @@ public class Robot extends IterativeRobot {
    */
   @Override
   public void autonomousPeriodic() {
+    System.out.println("RT-MWK01");
     switch (m_autoSelected) {
       case kCustomAuto:
         // Put custom auto code here
@@ -82,17 +96,72 @@ public class Robot extends IterativeRobot {
     }
   }
 
+  @Override
+  public void teleopInit() {
+    System.out.println("Coca-Cola");
+  }
+
   /**
    * This function is called periodically during operator control.
    */
   @Override
   public void teleopPeriodic() {
+    System.out.println("Hello 1714");
+  }
+
+  @Override
+  public void testInit() {
+    System.out.println("Lowaemysh");
+
+    mytalon0.set(ControlMode.PercentOutput, 0);
+    mytalon1.set(ControlMode.PercentOutput, 0);
+    mytalon2.set(ControlMode.PercentOutput, 0);
+    mytalon3.set(ControlMode.PercentOutput, 0);
+
+    mytalon1.follow(mytalon0); 
+    mytalon0.setInverted(false);
+    mytalon1.setInverted(InvertType.FollowMaster);
+
+    mytalon3.follow(mytalon2);
+    mytalon2.setInverted(true);
+    mytalon3.setInverted(InvertType.FollowMaster);
+
+
+
+    /*for(int i=0;i<10;i++) {
+
+      System.out.println(i);
+      try {
+        Thread.sleep(1000);
+      } catch (InterruptedException e) {
+        // 
+        e.printStackTrace();
+      }
+
+    }*/
   }
 
   /**
    * This function is called periodically during test mode.
    */
+
   @Override
   public void testPeriodic() {
+    System.out.println("Covfefe");
+    /*mytalon0.set(ControlMode.PercentOutput, .2);
+    mytalon1.set(ControlMode.PercentOutput, .2);
+    mytalon2.set(ControlMode.PercentOutput, .5);
+    mytalon3.set(ControlMode.PercentOutput, .5);*/
+
+    double stick0 = joyLeft.getRawAxis(1) * -1;  
+    System.out.println("stick:" + stick0);
+
+    mytalon0.set(ControlMode.PercentOutput, stick0);
+
+    double stick1 = joyRight.getRawAxis(1) * -1;
+    System.out.println("stick:" + stick1);
+
+    mytalon2.set(ControlMode.PercentOutput, stick1);
+
   }
 }
