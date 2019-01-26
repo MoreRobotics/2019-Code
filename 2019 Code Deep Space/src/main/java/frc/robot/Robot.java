@@ -6,14 +6,21 @@
 
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.*;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.InvertType;
 
+import edu.wpi.first.wpilibj.AnalogPotentiometer;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Joystick.AxisType;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Ultrasonic;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -27,14 +34,26 @@ public class Robot extends TimedRobot {
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
-  TalonSRX mytalon0 = new TalonSRX(0);
-  TalonSRX mytalon1 = new TalonSRX(1);
-  TalonSRX mytalon2 = new TalonSRX(2);
-  TalonSRX mytalon3 = new TalonSRX(3);
-  Joystick joyLeft = new Joystick(0);
+  WPI_TalonSRX mytalon0 = new WPI_TalonSRX(0);
+  WPI_TalonSRX mytalon1 = new WPI_TalonSRX(1);
+  WPI_TalonSRX mytalon2 = new WPI_TalonSRX(2);
+  WPI_TalonSRX mytalon3 = new WPI_TalonSRX(3);
+  WPI_TalonSRX tbTalon10 = new WPI_TalonSRX(10);
+  WPI_TalonSRX tbTalon11 = new WPI_TalonSRX(11);
+  Joystick joyLeft  = new Joystick(0);
   Joystick joyRight = new Joystick(3);
+  DifferentialDrive tankDrive;
+  DigitalInput lsKerplanstudu;
+  AnalogPotentiometer gnomeDestroyer;
+  final int lsKerplanstuduPin = 3;
+  Encoder enc11;
+  //Encoder enc10;
+  Ultrasonic sonic;
+  int target = 0;
+  int buffer = 100; 
   
 
+  
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -45,6 +64,17 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
     System.out.println("1714");
+    SpeedControllerGroup motorsLeft = new SpeedControllerGroup(mytalon0, mytalon1);
+    SpeedControllerGroup motorsRight = new SpeedControllerGroup(mytalon2, mytalon3);
+    tankDrive = new DifferentialDrive(motorsLeft, motorsRight);
+    motorsLeft.setInverted(true);
+    motorsRight.setInverted(true);
+    lsKerplanstudu = new DigitalInput(lsKerplanstuduPin); 
+    gnomeDestroyer = new AnalogPotentiometer(3);
+    enc11 = new Encoder(5,6);
+    sonic = new Ultrasonic(0,1);
+    sonic.setAutomaticMode(true);
+  
 
   }
 
@@ -84,7 +114,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-    System.out.println("RT-MWK01");
+    System.out.println("RT-MWK06");
     switch (m_autoSelected) {
       case kCustomAuto:
         // Put custom auto code here
@@ -107,11 +137,13 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     System.out.println("Hello 1714");
+    tankDrive.tankDrive(joyLeft.getRawAxis(1), joyRight.getRawAxis(1));
+    System.out.println(joyLeft.getRawAxis(1) + " " +joyLeft.getY());
   }
 
   @Override
   public void testInit() {
-    System.out.println("Lowaemysh");
+    /*System.out.println("Lowaemysh");
 
     mytalon0.set(ControlMode.PercentOutput, 0);
     mytalon1.set(ControlMode.PercentOutput, 0);
@@ -128,7 +160,10 @@ public class Robot extends TimedRobot {
 
 
 
-    /*for(int i=0;i<10;i++) {
+
+
+
+    for(int i=0;i<10;i++) {
 
       System.out.println(i);
       try {
@@ -139,6 +174,7 @@ public class Robot extends TimedRobot {
       }
 
     }*/
+      enc11.reset();
   }
 
   /**
@@ -147,11 +183,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testPeriodic() {
-    System.out.println("Covfefe");
-    /*mytalon0.set(ControlMode.PercentOutput, .2);
+    /*System.out.println("Covfefe");
+    mytalon0.set(ControlMode.PercentOutput, .2);
     mytalon1.set(ControlMode.PercentOutput, .2);
     mytalon2.set(ControlMode.PercentOutput, .5);
-    mytalon3.set(ControlMode.PercentOutput, .5);*/
+    mytalon3.set(ControlMode.PercentOutput, .5);
 
     double stick0 = joyLeft.getRawAxis(1) * -1;  
     System.out.println("stick:" + stick0);
@@ -162,6 +198,43 @@ public class Robot extends TimedRobot {
     System.out.println("stick:" + stick1);
 
     mytalon2.set(ControlMode.PercentOutput, stick1);
+    
 
-  }
+  }*/
+    //System.out.println(sonic.getRangeMM());
+     
+    
+    
+    if (!lsKerplanstudu.get())
+    { 
+  
+      target = -2000; 
+    
+    
+    }
+    else
+    {
+      target = 1000; 
+      
+
+
+    }
+    
+    if(enc11.get() > target + buffer )
+    { 
+      tbTalon11.set(ControlMode.PercentOutput, -1 );
+    }
+    else if(enc11.get() < target - buffer )
+    {
+      tbTalon11.set(ControlMode.PercentOutput, 1 );
+    }
+    else
+    {
+       tbTalon11.set(ControlMode.PercentOutput, 0.0 );
+    }
+    System.out.println(enc11.get());
+
+    
+  
+  } 
 }
