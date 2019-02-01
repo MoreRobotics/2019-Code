@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Ultrasonic;
+import edu.wpi.first.wpilibj.XboxController;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -42,6 +43,7 @@ public class Robot extends TimedRobot {
   WPI_TalonSRX tbTalon11 = new WPI_TalonSRX(11);
   Joystick joyLeft  = new Joystick(0);
   Joystick joyRight = new Joystick(3);
+  XboxController Xbox = new XboxController(2);
   DifferentialDrive tankDrive;
   DigitalInput lsKerplanstudu;
   AnalogPotentiometer gnomeDestroyer;
@@ -51,7 +53,6 @@ public class Robot extends TimedRobot {
   Ultrasonic sonic;
   int target = 0;
   int buffer = 100; 
-  
 
   
   /**
@@ -74,6 +75,8 @@ public class Robot extends TimedRobot {
     enc11 = new Encoder(5,6);
     sonic = new Ultrasonic(0,1);
     sonic.setAutomaticMode(true);
+    
+    
   
 
   }
@@ -136,9 +139,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    System.out.println("Hello 1714");
+    /*System.out.println("Hello 1714");
     tankDrive.tankDrive(joyLeft.getRawAxis(1), joyRight.getRawAxis(1));
-    System.out.println(joyLeft.getRawAxis(1) + " " +joyLeft.getY());
+    System.out.println(joyLeft.getRawAxis(1) + " " +joyLeft.getY());*/
   }
 
   @Override
@@ -187,40 +190,48 @@ public class Robot extends TimedRobot {
     mytalon0.set(ControlMode.PercentOutput, .2);
     mytalon1.set(ControlMode.PercentOutput, .2);
     mytalon2.set(ControlMode.PercentOutput, .5);
-    mytalon3.set(ControlMode.PercentOutput, .5);
+    mytalon3.set(ControlMode.PercentOutput, .5);*/
 
     double stick0 = joyLeft.getRawAxis(1) * -1;  
     System.out.println("stick:" + stick0);
 
-    mytalon0.set(ControlMode.PercentOutput, stick0);
+    tbTalon11.set(ControlMode.PercentOutput, stick0);
 
     double stick1 = joyRight.getRawAxis(1) * -1;
     System.out.println("stick:" + stick1);
 
-    mytalon2.set(ControlMode.PercentOutput, stick1);
+    tbTalon10.set(ControlMode.PercentOutput, stick1);
     
 
-  }*/
+  
     //System.out.println(sonic.getRangeMM());
-     
+
+    if (Xbox.getAButton())
+    {
+      target = 4000;
+
+    }
+    else
+    {
+      target = 2000;
+
+    }
     
     
-    if (!lsKerplanstudu.get())
+    /*if (!lsKerplanstudu.get())
     { 
   
       target = -2000; 
-    
-    
+      
     }
     else
     {
       target = 1000; 
       
-
-
     }
-    
-    if(enc11.get() > target + buffer )
+    */
+
+    /* if(enc11.get() > target + buffer )
     { 
       tbTalon11.set(ControlMode.PercentOutput, -1 );
     }
@@ -232,9 +243,13 @@ public class Robot extends TimedRobot {
     {
        tbTalon11.set(ControlMode.PercentOutput, 0.0 );
     }
-    System.out.println(enc11.get());
+    
+    System.out.println(enc11.get());*/
 
     
   
-  } 
+  
+
+  }
+  
 }
