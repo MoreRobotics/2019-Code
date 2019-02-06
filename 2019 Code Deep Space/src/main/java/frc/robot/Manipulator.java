@@ -45,8 +45,6 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
       DigitalInput IRsensor;
       DoubleSolenoid solePneumatics;
 
-
-      
     Manipulator() { 
       solePneumatics = new DoubleSolenoid(solePneumatic1ID, solePneumatic2ID);
       IRsensor = new DigitalInput(IRsensorID);
@@ -55,21 +53,26 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
       if(Xbox.getBumper(Hand.kLeft))
       {
         Victor888.set(-1);
-
       }
 
       if(Xbox.getBumper(Hand.kRight))
       {
         Victor888.set(1);
-
       }
-
-
     
       if (Xbox.getAButton())
       {
         solePneumatics.set(DoubleSolenoid.Value.kForward);
-       
+      }
+
+      if (Xbox.getBButton())
+      {
+        solePneumatics.set(DoubleSolenoid.Value.kReverse);
+      }
+
+      if (IRsensor.get())
+      {
+        Victor888.set(stopMotor);
       }
     }
 
