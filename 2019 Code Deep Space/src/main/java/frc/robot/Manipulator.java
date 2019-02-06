@@ -52,9 +52,14 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
       
       if(Xbox.getBumper(Hand.kLeft))
       {
-        Victor888.set(-1);
-      }
+        if (IRsensor.get())
+        {
+        Victor888.set(0);
+        }
 
+        Victor888.set(-1);
+
+      }
       if(Xbox.getBumper(Hand.kRight))
       {
         Victor888.set(1);
@@ -64,16 +69,15 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
       {
         solePneumatics.set(DoubleSolenoid.Value.kForward);
       }
-
-      if (Xbox.getBButton())
+      else 
       {
         solePneumatics.set(DoubleSolenoid.Value.kReverse);
       }
 
-      if (IRsensor.get())
-      {
-        Victor888.set(stopMotor);
-      }
+
+
+
+      
     }
 
   }
