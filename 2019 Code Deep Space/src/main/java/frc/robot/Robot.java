@@ -8,19 +8,20 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.*;
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.InvertType;
+//import com.ctre.phoenix.motorcontrol.InvertType;
 
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Joystick.AxisType;
+//import edu.wpi.first.wpilibj.Joystick.AxisType;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Ultrasonic;
+import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.XboxController;
 
 /**
@@ -52,7 +53,14 @@ public class Robot extends TimedRobot {
   //Encoder enc10;
   Ultrasonic sonic;
   int target = 0;
-  int buffer = 100; 
+  int buffer = 100;
+  final int victor8881Chn = 1;
+  Victor victor8881 = new Victor(victor8881Chn);
+  
+
+
+  
+
 
   
   /**
@@ -76,7 +84,7 @@ public class Robot extends TimedRobot {
     sonic = new Ultrasonic(0,1);
     sonic.setAutomaticMode(true);
     
-    
+  
   
 
   }
@@ -131,7 +139,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    System.out.println("Coca-Cola");
+    System.out.println();
   }
 
   /**
@@ -201,6 +209,8 @@ public class Robot extends TimedRobot {
     System.out.println("stick:" + stick1);
 
     tbTalon10.set(ControlMode.PercentOutput, stick1);
+
+    victor8881.set(stick0);
     
 
   
@@ -214,6 +224,12 @@ public class Robot extends TimedRobot {
     else
     {
       target = 2000;
+
+    }
+
+    if (Xbox.getBackButton())
+    {
+
 
     }
     
@@ -253,3 +269,26 @@ public class Robot extends TimedRobot {
   }
   
 }
+/**
+ * Plannned button mapping
+ * Riley Mackey 2/2/2019
+ * 
+ * Right Bumper- Intake (In)
+ * Left Bumper- Intake (Out)
+ * Right Trigger- Unassinged 
+ * Left Trigger- Unassinged 
+ * DPad- (Possibly Stage Selection)
+ * JoyStick1(Left Side)- Manual Lift Movement (Possibly Not Included)
+ * JoyStick2(Right Side)- Unassinged 
+ * A Button- Solenoid push
+ * B Button- Solenoid pull 
+ * X Button- (Possibly Cargo Stages for Stage Selection)
+ * Y Button- (Possibly Hatch Stages for Stage Selection)
+ * Back button- Possibly stage level reset (Tyler) 
+ * Start Button- Unassinged 
+ * Need a button to return to first stage (got the bak button Tyler )
+ * Need a button to return to first stage (got the bak button Tyler )
+ * Need a button to return to first stage (got the bak button Tyler )
+ * Need a button to return to first stage (got the bak button Tyler )
+ * We want to map a button to stop wheel movement in the manipulator
+ */
