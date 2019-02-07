@@ -11,11 +11,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 
 
-
-
-
-
-
 /**
  * Add your docs here.
  */
@@ -24,32 +19,33 @@ public class DriverControl {
     Joystick joyRight = new Joystick(3);
     XboxController driverController = new XboxController(0);
     XboxController operatorController = new XboxController(1);
-
+    Lift.liftState currentState;
+    Lift.liftState nextState;
     public void update(){
-        if(Xbox.getRawAxis(-1) != 0) {
-            nextState = liftState.MANUAL;     
-        }else if(Xbox.getAButton()) {
-            nextState = liftState.GROUND_LEVEL;
-        }else if(Xbox.getXButton()) {
-            if(Xbox.getBackButton()) {
-                nextState = liftState.CARGO_LEVEL1;
+        if(operatorController.getRawAxis(-1) != 0) {
+            nextState = Lift.liftState.MANUAL;     
+        }else if(operatorController.getAButton()) {
+            nextState = Lift.liftState.GROUND_LEVEL;
+        }else if(operatorController.getXButton()) {
+            if(operatorController.getBackButton()) {
+                nextState = Lift.liftState.CARGO_LEVEL1;
             }else {
-                nextState = liftState.HATCH_LEVEL1;
+                nextState = Lift.liftState.HATCH_LEVEL1;
             }
-        }else if(Xbox.getBButton()) {
-            if(Xbox.getBackButton()) {
-                nextState = liftState.CARGO_LEVEL2;
+        }else if(operatorController.getBButton()) {
+            if(operatorController.getBackButton()) {
+                nextState = Lift.liftState.CARGO_LEVEL2;
             }else {
-                nextState = liftState.HATCH_LEVEL2;
+                nextState = Lift.liftState.HATCH_LEVEL2;
             }
-        }else if(Xbox.getYButton()) {
-            if(Xbox.getBackButton()) {
-                nextState = liftState.CARGO_LEVEL3;
+        }else if(operatorController.getYButton()) {
+            if(operatorController.getBackButton()) {
+                nextState = Lift.liftState.CARGO_LEVEL3;
             }else {
-                nextState = liftState.HATCH_LEVEL3;
+                nextState = Lift.liftState.HATCH_LEVEL3;
             }
         }   
-        setState(nextState);
+        
     }    
 }
 /**

@@ -12,30 +12,12 @@ import edu.wpi.first.wpilibj.XboxController;
 
 
 
-
-
-
-
-
-
 public class Climber{
     XboxController Xbox;
 
 
 
-
-
-
-
-
-
-
     Climber(){
-
-
-
-
-
 
 
 
