@@ -50,6 +50,10 @@
       cargoDetect = new DigitalInput(IRsensorID);
       Victor888 = new Victor(Victor888ID);
       
+      
+    } 
+      
+    public void update() {
       if (cargoDetect.get())
       {
         Victor888.stopMotor();    
@@ -78,10 +82,13 @@
         solePneumatics.set(DoubleSolenoid.Value.kReverse);
       }
 
+    }
+      
+      
 
 
 
       
-    }
-
   }
+
+  
