@@ -34,9 +34,9 @@ public class Lift {
     double liftEncoderMultiplier;
     TalonSRX rightMotor;
     VictorSPX leftMotor;
-
     DigitalInput botSwitch;
     //DigitalInput topSwitch;
+
     public enum liftState{
         GROUND_LEVEL, 
         CARGO_LEVEL1, 
@@ -45,9 +45,13 @@ public class Lift {
         HATCH_LEVEL1,
         HATCH_LEVEL2,
         HATCH_LEVEL3,
-        MANUAL_SET,
-
+        MANUAL
+    
     }
+        liftState currentState;
+        liftState nextState;
+
+
     XboxController Xbox;
     
 
@@ -57,8 +61,6 @@ public class Lift {
         rightMotor = new TalonSRX(motor1ID);
         leftMotor = new VictorSPX(motor2ID);
 
-     
-        
         botSwitch = new DigitalInput(botSwitchPin);
         //topSwitch = new DigitalInput(topSwitchPin);
         liftEncoderMultiplier = 100;
@@ -67,8 +69,55 @@ public class Lift {
     }
 
     public void update() {
+       
 
     }
+
+    public void teleopInit() {
+    
+        
+
+
+
+    }
+
+
+
+
+    public void teleopPeriodic() {
+
+        if(Xbox.getRawAxis(-1) != 0) {
+            nextState = liftState.MANUAL;     
+        }else if(Xbox.getAButton()) {
+            nextState = liftState.GROUND_LEVEL;
+        }else if(Xbox.getXButton()) {
+            if(Xbox.getBackButton()) {
+                nextState = liftState.CARGO_LEVEL1;
+            }else {
+                nextState = liftState.HATCH_LEVEL1;
+            }
+        }else if(Xbox.getBButton()) {
+            if(Xbox.getBackButton()) {
+                nextState = liftState.CARGO_LEVEL2;
+            }else {
+                nextState = liftState.HATCH_LEVEL2;
+            }
+        }else if(Xbox.getYButton()) {
+            if(Xbox.getBackButton()) {
+                nextState = liftState.CARGO_LEVEL3;
+            }else {
+                nextState = liftState.HATCH_LEVEL3;
+            }
+        }
+
+        setState(nextState);
+        
+
+
+
+    }
+
+
 /**
  * Either we set stage select as able to be switched between cargo
  * and hatches or we program each individual stage.
@@ -131,7 +180,7 @@ public class Lift {
             rightMotor.set(ControlMode.Position, target);
             
             break;
-            case MANUAL_SET:
+            case MANUAL:
             rightMotor.set(ControlMode.PercentOutput, Xbox.getRawAxis(-1));
                 //need to find the axis for the joystick
         }

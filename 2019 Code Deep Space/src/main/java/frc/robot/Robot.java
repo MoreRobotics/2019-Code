@@ -44,7 +44,8 @@ public class Robot extends TimedRobot {
   WPI_TalonSRX tbTalon11 = new WPI_TalonSRX(11);
   Joystick joyLeft  = new Joystick(0);
   Joystick joyRight = new Joystick(3);
-  XboxController Xbox = new XboxController(2);
+  XboxController driverController = new XboxController(0);
+  XboxController operatorController = new XboxController(1);
   DifferentialDrive tankDrive;
   DigitalInput lsKerplanstudu;
   AnalogPotentiometer gnomeDestroyer;
@@ -56,6 +57,10 @@ public class Robot extends TimedRobot {
   int buffer = 100;
   final int victor8881Chn = 1;
   Victor victor8881 = new Victor(victor8881Chn);
+  Lift lift;
+  Robot(){
+    lift = new Lift(operatorController);
+  }
   
 
 
@@ -216,7 +221,7 @@ public class Robot extends TimedRobot {
   
     //System.out.println(sonic.getRangeMM());
 
-    if (Xbox.getAButton())
+    if (driverController.getAButton())
     {
       target = 4000;
 
@@ -227,7 +232,7 @@ public class Robot extends TimedRobot {
 
     }
 
-    if (Xbox.getBackButton())
+    if (driverController.getBackButton())
     {
 
 
@@ -287,8 +292,10 @@ public class Robot extends TimedRobot {
  * Back button- Possibly stage level reset (Tyler) 
  * Start Button- Unassinged 
  * Need a button to return to first stage (got the bak button Tyler )
- * Need a button to return to first stage (got the bak button Tyler )
- * Need a button to return to first stage (got the bak button Tyler )
- * Need a button to return to first stage (got the bak button Tyler )
  * We want to map a button to stop wheel movement in the manipulator
- */
+ * 
+ * A: Down/ Ground 
+ * B: Level 2
+ * X: Level 1 
+ * Y: Level 3
+*/

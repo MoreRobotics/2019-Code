@@ -17,16 +17,16 @@
 
  package frc.robot;
   
+
+
  import edu.wpi.first.wpilibj.DigitalInput;
  import edu.wpi.first.wpilibj.DoubleSolenoid;
  import edu.wpi.first.wpilibj.Victor;
-// import edu.wpi.first.wpilibj.Solenoid;
  import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
+ import edu.wpi.first.wpilibj.GenericHID.Hand;
  
 
-
- /**
+  /**
   * Tyler- I found out that the 888's aren't working because we must calibrate 
   them first, I found the victor 884 users manual that frc says to use to 
   calibrate the 888's (its the vex page on the computer) I set up
@@ -42,34 +42,39 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
       final int Victor888ID = -1;
       Victor Victor888;
       XboxController Xbox; 
-      DigitalInput IRsensor;
+      DigitalInput cargoDetect;
       DoubleSolenoid solePneumatics;
 
 
       
     Manipulator() { 
       solePneumatics = new DoubleSolenoid(solePneumatic1ID, solePneumatic2ID);
-      IRsensor = new DigitalInput(IRsensorID);
+      cargoDetect = new DigitalInput(IRsensorID);
       Victor888 = new Victor(Victor888ID);
       
+      if (cargoDetect.get())
+      {
+        Victor888.stopMotor();    
+      }
+
       if(Xbox.getBumper(Hand.kLeft))
       {
         Victor888.set(-1);
-
       }
 
       if(Xbox.getBumper(Hand.kRight))
       {
         Victor888.set(1);
-
       }
 
-
-    
       if (Xbox.getAButton())
       {
         solePneumatics.set(DoubleSolenoid.Value.kForward);
-       
+      }
+
+      if (Xbox.getBButton())
+      {
+        solePneumatics.set(DoubleSolenoid.Value.kReverse);
       }
     }
 
