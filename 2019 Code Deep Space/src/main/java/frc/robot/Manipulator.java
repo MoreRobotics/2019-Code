@@ -45,8 +45,6 @@
       DigitalInput cargoDetect;
       DoubleSolenoid solePneumatics;
 
-
-      
     Manipulator() { 
       solePneumatics = new DoubleSolenoid(solePneumatic1ID, solePneumatic2ID);
       cargoDetect = new DigitalInput(IRsensorID);
@@ -59,23 +57,31 @@
 
       if(Xbox.getBumper(Hand.kLeft))
       {
+        if (cargoDetect.get())
+        {
+        Victor888.set(0);
+        }
+
         Victor888.set(-1);
       }
-
       if(Xbox.getBumper(Hand.kRight))
       {
         Victor888.set(1);
       }
-
+    
       if (Xbox.getAButton())
       {
         solePneumatics.set(DoubleSolenoid.Value.kForward);
       }
-
-      if (Xbox.getBButton())
+      else 
       {
         solePneumatics.set(DoubleSolenoid.Value.kReverse);
       }
+
+
+
+
+      
     }
 
   }
