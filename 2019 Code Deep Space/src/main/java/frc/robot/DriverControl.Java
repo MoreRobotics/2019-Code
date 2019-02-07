@@ -15,34 +15,37 @@ import edu.wpi.first.wpilibj.XboxController;
  * Add your docs here.
  */
 public class DriverControl {
+    Robot robot;
     Joystick joyLeft  = new Joystick(0);
     Joystick joyRight = new Joystick(3);
     XboxController driverController = new XboxController(0);
     XboxController operatorController = new XboxController(1);
-    Lift.liftState currentState;
-    Lift.liftState nextState;
+    DriverControl(Robot robot ){
+        this.robot = robot;
+    }
     public void update(){
+       
         if(operatorController.getRawAxis(-1) != 0) {
-            nextState = Lift.liftState.MANUAL;     
+            robot.nextState = Lift.liftState.MANUAL;     
         }else if(operatorController.getAButton()) {
-            nextState = Lift.liftState.GROUND_LEVEL;
+            robot.nextState = Lift.liftState.GROUND_LEVEL;
         }else if(operatorController.getXButton()) {
             if(operatorController.getBackButton()) {
-                nextState = Lift.liftState.CARGO_LEVEL1;
+                robot.nextState = Lift.liftState.CARGO_LEVEL1;
             }else {
-                nextState = Lift.liftState.HATCH_LEVEL1;
+                robot.nextState = Lift.liftState.HATCH_LEVEL1;
             }
         }else if(operatorController.getBButton()) {
             if(operatorController.getBackButton()) {
-                nextState = Lift.liftState.CARGO_LEVEL2;
+                robot.nextState = Lift.liftState.CARGO_LEVEL2;
             }else {
-                nextState = Lift.liftState.HATCH_LEVEL2;
+                robot.nextState = Lift.liftState.HATCH_LEVEL2;
             }
         }else if(operatorController.getYButton()) {
             if(operatorController.getBackButton()) {
-                nextState = Lift.liftState.CARGO_LEVEL3;
+                robot.nextState = Lift.liftState.CARGO_LEVEL3;
             }else {
-                nextState = Lift.liftState.HATCH_LEVEL3;
+                robot.nextState = Lift.liftState.HATCH_LEVEL3;
             }
         }   
         

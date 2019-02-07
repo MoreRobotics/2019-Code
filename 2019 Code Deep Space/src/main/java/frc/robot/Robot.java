@@ -56,10 +56,11 @@ public class Robot extends TimedRobot {
   Victor victor8881 = new Victor(victor8881Chn);
   Lift lift;
   DriverControl driverControl;
-  
+ public Lift.liftState currentState;
+ public Lift.liftState nextState;
   Robot(){
     lift = new Lift();
-    driverControl = new DriverControl();
+    driverControl = new DriverControl(this);
   }
   
 
