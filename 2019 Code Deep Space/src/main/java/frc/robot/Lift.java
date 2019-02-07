@@ -15,7 +15,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.DigitalInput;
 //import edu.wpi.first.wpilibj.Encoder;
 //import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj.XboxController;
+//import edu.wpi.first.wpilibj.XboxController;
 
 /**
  * Add your docs here.
@@ -52,12 +52,11 @@ public class Lift {
         liftState nextState;
 
 
-    XboxController Xbox;
+   
     
 
     
-    Lift(XboxController operatorController){
-        Xbox = operatorController;
+    Lift(){ 
         rightMotor = new TalonSRX(motor1ID);
         leftMotor = new VictorSPX(motor2ID);
 
@@ -67,12 +66,7 @@ public class Lift {
         leftMotor.set(ControlMode.Follower,motor1ID);
         leftMotor.setInverted(true);
     }
-
-    public void update() {
-       
-
-    }
-
+    
     public void teleopInit() {
     
         
@@ -80,42 +74,21 @@ public class Lift {
 
 
     }
-
+    
 
 
 
     public void teleopPeriodic() {
 
-        if(Xbox.getRawAxis(-1) != 0) {
-            nextState = liftState.MANUAL;     
-        }else if(Xbox.getAButton()) {
-            nextState = liftState.GROUND_LEVEL;
-        }else if(Xbox.getXButton()) {
-            if(Xbox.getBackButton()) {
-                nextState = liftState.CARGO_LEVEL1;
-            }else {
-                nextState = liftState.HATCH_LEVEL1;
-            }
-        }else if(Xbox.getBButton()) {
-            if(Xbox.getBackButton()) {
-                nextState = liftState.CARGO_LEVEL2;
-            }else {
-                nextState = liftState.HATCH_LEVEL2;
-            }
-        }else if(Xbox.getYButton()) {
-            if(Xbox.getBackButton()) {
-                nextState = liftState.CARGO_LEVEL3;
-            }else {
-                nextState = liftState.HATCH_LEVEL3;
-            }
+       
         }
 
-        setState(nextState);
+        
         
 
 
 
-    }
+    
 
 
 /**
@@ -181,7 +154,7 @@ public class Lift {
             
             break;
             case MANUAL:
-            rightMotor.set(ControlMode.PercentOutput, Xbox.getRawAxis(-1));
+            //rightMotor.set(ControlMode.PercentOutput, Xbox.getRawAxis(-1));
                 //need to find the axis for the joystick
         }
     }

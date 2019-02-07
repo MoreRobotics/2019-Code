@@ -7,12 +7,12 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.*;
-import com.ctre.phoenix.motorcontrol.ControlMode;
+//import com.ctre.phoenix.motorcontrol.ControlMode;
 //import com.ctre.phoenix.motorcontrol.InvertType;
 
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Joystick;
+//import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.TimedRobot;
 //import edu.wpi.first.wpilibj.Joystick.AxisType;
@@ -22,7 +22,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.Victor;
-import edu.wpi.first.wpilibj.XboxController;
+//import edu.wpi.first.wpilibj.XboxController;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -42,10 +43,6 @@ public class Robot extends TimedRobot {
   WPI_TalonSRX mytalon3 = new WPI_TalonSRX(3);
   WPI_TalonSRX tbTalon10 = new WPI_TalonSRX(10);
   WPI_TalonSRX tbTalon11 = new WPI_TalonSRX(11);
-  Joystick joyLeft  = new Joystick(0);
-  Joystick joyRight = new Joystick(3);
-  XboxController driverController = new XboxController(0);
-  XboxController operatorController = new XboxController(1);
   DifferentialDrive tankDrive;
   DigitalInput lsKerplanstudu;
   AnalogPotentiometer gnomeDestroyer;
@@ -58,10 +55,13 @@ public class Robot extends TimedRobot {
   final int victor8881Chn = 1;
   Victor victor8881 = new Victor(victor8881Chn);
   Lift lift;
+  DriverControl driverControl;
   Robot(){
-    lift = new Lift(operatorController);
+    lift = new Lift();
+    driverControl = new DriverControl();
   }
   
+
 
 
   
@@ -152,9 +152,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    /*System.out.println("Hello 1714");
-    tankDrive.tankDrive(joyLeft.getRawAxis(1), joyRight.getRawAxis(1));
-    System.out.println(joyLeft.getRawAxis(1) + " " +joyLeft.getY());*/
+    //driverControl.update();
   }
 
   @Override
@@ -198,104 +196,9 @@ public class Robot extends TimedRobot {
    */
 
   @Override
-  public void testPeriodic() {
-    /*System.out.println("Covfefe");
-    mytalon0.set(ControlMode.PercentOutput, .2);
-    mytalon1.set(ControlMode.PercentOutput, .2);
-    mytalon2.set(ControlMode.PercentOutput, .5);
-    mytalon3.set(ControlMode.PercentOutput, .5);*/
-
-    double stick0 = joyLeft.getRawAxis(1) * -1;  
-    System.out.println("stick:" + stick0);
-
-    tbTalon11.set(ControlMode.PercentOutput, stick0);
-
-    double stick1 = joyRight.getRawAxis(1) * -1;
-    System.out.println("stick:" + stick1);
-
-    tbTalon10.set(ControlMode.PercentOutput, stick1);
-
-    victor8881.set(stick0);
-    
-
-  
-    //System.out.println(sonic.getRangeMM());
-
-    if (driverController.getAButton())
-    {
-      target = 4000;
-
-    }
-    else
-    {
-      target = 2000;
-
-    }
-
-    if (driverController.getBackButton())
-    {
-
-
-    }
-    
-    
-    /*if (!lsKerplanstudu.get())
-    { 
-  
-      target = -2000; 
-      
-    }
-    else
-    {
-      target = 1000; 
-      
-    }
-    */
-
-    /* if(enc11.get() > target + buffer )
-    { 
-      tbTalon11.set(ControlMode.PercentOutput, -1 );
-    }
-    else if(enc11.get() < target - buffer )
-    {
-      tbTalon11.set(ControlMode.PercentOutput, 1 );
-    }
-    else
-    {
-       tbTalon11.set(ControlMode.PercentOutput, 0.0 );
-    }
-    
-    System.out.println(enc11.get());*/
-
-    
-  
+  public void testPeriodic() {  
   
 
   }
   
 }
-/**
- * Plannned button mapping
- * Riley Mackey 2/2/2019
- * 
- * Right Bumper- Intake (In)
- * Left Bumper- Intake (Out)
- * Right Trigger- Unassinged 
- * Left Trigger- Unassinged 
- * DPad- (Possibly Stage Selection)
- * JoyStick1(Left Side)- Manual Lift Movement (Possibly Not Included)
- * JoyStick2(Right Side)- Unassinged 
- * A Button- Solenoid push
- * B Button- Solenoid pull 
- * X Button- (Possibly Cargo Stages for Stage Selection)
- * Y Button- (Possibly Hatch Stages for Stage Selection)
- * Back button- Possibly stage level reset (Tyler) 
- * Start Button- Unassinged 
- * Need a button to return to first stage (got the bak button Tyler )
- * We want to map a button to stop wheel movement in the manipulator
- * 
- * A: Down/ Ground 
- * B: Level 2
- * X: Level 1 
- * Y: Level 3
-*/
