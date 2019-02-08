@@ -36,14 +36,20 @@
   */
 
   public class Manipulator {
-      final int IRsensorID = -1; 
-      final int solePneumatic1ID = -1;
-      final int solePneumatic2ID = -1;
-      final int Victor888ID = -1;
-      Victor Victor888;
-      XboxController Xbox; 
-      DigitalInput cargoDetect;
-      DoubleSolenoid solePneumatics;
+    final int IRsensorID = -1; 
+    final int solePneumatic1ID = -1;
+    final int solePneumatic2ID = -1;
+    final int Victor888ID = -1;
+    Victor Victor888;
+    XboxController Xbox; 
+    DigitalInput cargoDetect;
+    DoubleSolenoid solePneumatics;
+
+    public enum IntakeWheelState{
+      SPIN_IN,
+      SPIN_OUT,
+      SPIN_STOP
+    }
 
     Manipulator() { 
       solePneumatics = new DoubleSolenoid(solePneumatic1ID, solePneumatic2ID);
@@ -52,7 +58,7 @@
       
       
     } 
-      
+    
     public void update() {
       if (cargoDetect.get())
       {

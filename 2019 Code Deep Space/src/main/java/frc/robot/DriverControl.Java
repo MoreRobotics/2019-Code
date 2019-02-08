@@ -57,6 +57,16 @@ public class DriverControl {
             //DoubleSolenoid retract
             robot.solenoidPush = false;
         }
+        if(operatorController.getBumper(GenericHID.Hand.kRight)) {
+            //Spin intake in
+            robot.intakeWheelState = Manipulator.IntakeWheelState.SPIN_IN;
+        }else if(operatorController.getBumper(GenericHID.Hand.kLeft)){
+            //Spin intake out
+            robot.intakeWheelState = Manipulator.IntakeWheelState.SPIN_OUT;
+        }else{
+            //stop spin
+            robot.intakeWheelState = Manipulator.IntakeWheelState.SPIN_STOP;
+        }
     }
 }    
 /**
