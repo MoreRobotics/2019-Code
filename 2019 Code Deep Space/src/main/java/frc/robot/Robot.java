@@ -22,8 +22,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.Victor;
-//import edu.wpi.first.wpilibj.XboxController;
-
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -37,29 +37,19 @@ public class Robot extends TimedRobot {
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
-  WPI_TalonSRX mytalon0 = new WPI_TalonSRX(0);
-  WPI_TalonSRX mytalon1 = new WPI_TalonSRX(1);
-  WPI_TalonSRX mytalon2 = new WPI_TalonSRX(2);
-  WPI_TalonSRX mytalon3 = new WPI_TalonSRX(3);
-  WPI_TalonSRX tbTalon10 = new WPI_TalonSRX(10);
-  WPI_TalonSRX tbTalon11 = new WPI_TalonSRX(11);
-  DifferentialDrive tankDrive;
-  DigitalInput lsKerplanstudu;
-  AnalogPotentiometer gnomeDestroyer;
-  final int lsKerplanstuduPin = 3;
-  Encoder enc11;
-  //Encoder enc10;
-  Ultrasonic sonic;
-  int target = 0;
-  int buffer = 100;
-  final int victor8881Chn = 1;
-  Victor victor8881 = new Victor(victor8881Chn);
-  Lift lift;
-  DriverControl driverControl;
- public Lift.liftState currentState;
- public Lift.liftState nextState;
+  private DifferentialDrive tankDrive;
+  private Ultrasonic sonic;
+  private final int victor8881Chn = 1;
+  private Victor victor8881 = new Victor(victor8881Chn);
+  private Lift lift;
+  private DriverControl driverControl;
+  private XboxController xbox;
+  public boolean solenoidPush;
+  public Lift.liftState currentState;
+  public Lift.liftState nextState;
+
   Robot(){
-    lift = new Lift();
+   // lift = new Lift();
     driverControl = new DriverControl(this);
   }
   
@@ -80,16 +70,14 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
     System.out.println("1714");
-    SpeedControllerGroup motorsLeft = new SpeedControllerGroup(mytalon0, mytalon1);
-    SpeedControllerGroup motorsRight = new SpeedControllerGroup(mytalon2, mytalon3);
-    tankDrive = new DifferentialDrive(motorsLeft, motorsRight);
-    motorsLeft.setInverted(true);
-    motorsRight.setInverted(true);
-    lsKerplanstudu = new DigitalInput(lsKerplanstuduPin); 
-    gnomeDestroyer = new AnalogPotentiometer(3);
-    enc11 = new Encoder(5,6);
+    //SpeedControllerGroup motorsLeft = new SpeedControllerGroup(mytalon0, mytalon1);
+    //SpeedControllerGroup motorsRight = new SpeedControllerGroup(mytalon2, mytalon3);
+    //tankDrive = new DifferentialDrive(motorsLeft, motorsRight);
+    //motorsLeft.setInverted(true);
+    //motorsRight.setInverted(true);
     sonic = new Ultrasonic(0,1);
     sonic.setAutomaticMode(true);
+    solenoidPush = false;
     
   
   
@@ -159,38 +147,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testInit() {
-    /*System.out.println("Lowaemysh");
-
-    mytalon0.set(ControlMode.PercentOutput, 0);
-    mytalon1.set(ControlMode.PercentOutput, 0);
-    mytalon2.set(ControlMode.PercentOutput, 0);
-    mytalon3.set(ControlMode.PercentOutput, 0);
-
-    mytalon1.follow(mytalon0); 
-    mytalon0.setInverted(false);
-    mytalon1.setInverted(InvertType.FollowMaster);
-
-    mytalon3.follow(mytalon2);
-    mytalon2.setInverted(true);
-    mytalon3.setInverted(InvertType.FollowMaster);
-
-
-
-
-
-
-    for(int i=0;i<10;i++) {
-
-      System.out.println(i);
-      try {
-        Thread.sleep(1000);
-      } catch (InterruptedException e) {
-        // 
-        e.printStackTrace();
-      }
-
-    }*/
-      enc11.reset();
+    xbox = new XboxController(2); 
+ 
   }
 
   /**
@@ -199,7 +157,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testPeriodic() {  
-  
+    System.out.println(xbox.getTriggerAxis(GenericHID.Hand.kRight));
 
   }
   

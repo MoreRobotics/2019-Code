@@ -9,18 +9,20 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID;
 
 
 /**
  * Add your docs here.
  */
 public class DriverControl {
+    private static final double triggerThreshold = 0.5;
     Robot robot;
     Joystick joyLeft  = new Joystick(0);
     Joystick joyRight = new Joystick(3);
     XboxController driverController = new XboxController(0);
     XboxController operatorController = new XboxController(1);
-    DriverControl(Robot robot ){
+    DriverControl(Robot robot){
         this.robot = robot;
     }
     public void update(){
@@ -48,17 +50,23 @@ public class DriverControl {
                 robot.nextState = Lift.liftState.HATCH_LEVEL3;
             }
         }   
-        
-    }    
-}
+        if(operatorController.getTriggerAxis(GenericHID.Hand.kRight) > triggerThreshold) {
+            //DoubleSolenoid push
+            robot.solenoidPush = true;
+        }else if(operatorController.getTriggerAxis(GenericHID.Hand.kLeft) > triggerThreshold){
+            //DoubleSolenoid retract
+            robot.solenoidPush = false;
+        }
+    }
+}    
 /**
  * Plannned button mapping
  * Riley Mackey 2/2/2019
  * 
  * Right Bumper- Intake (In)
  * Left Bumper- Intake (Out)
- * Right Trigger- Unassinged 
- * Left Trigger- Unassinged 
+ * Right Trigger- Solenoid out?
+ * Left Trigger- Solenoid in?
  * DPad- unassigned
  * JoyStick1(Left Side)- Manual Lift Movement
  * JoyStick2(Right Side)- Unassinged 
@@ -68,7 +76,7 @@ public class DriverControl {
  * Y Button- Stage
  * Back button- Possibly stage level reset (Tyler) 
  * Start Button- Unassinged 
- * Need a button to return to first stage (got the bak button Tyler )
+ * Need a button to return to first stage (got the back button Tyler )
  * We want to map a button to stop wheel movement in the manipulator
  * Need solenoid button
  * 
