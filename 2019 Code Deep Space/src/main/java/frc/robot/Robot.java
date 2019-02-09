@@ -42,6 +42,7 @@ public class Robot extends TimedRobot {
   //private Lift lift;
   private DriveTrain driveTrain;
   private DriverControl driverControl;
+  private Manipulator manipulator;
   private XboxController xbox;
   public boolean solenoidPush;
   public Lift.liftState currentState;
@@ -53,13 +54,9 @@ public class Robot extends TimedRobot {
    // lift = new Lift();
     driverControl = new DriverControl(this);
     driveTrain = new DriveTrain(driverControl.getJoyLeft(), driverControl.getJoyRight());
+    manipulator = new Manipulator(this);
   }
   
-
-
-
-  
-
 
   
   /**

@@ -72,6 +72,10 @@ public class DriveTrain {
 
         double stick2 = joyRight.getX();
           talonRight1.set(ControlMode.PercentOutput, stick2);*/
+
+        
+
+
         }
         
             

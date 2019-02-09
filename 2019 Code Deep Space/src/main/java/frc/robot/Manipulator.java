@@ -23,7 +23,8 @@
  import edu.wpi.first.wpilibj.DoubleSolenoid;
  import edu.wpi.first.wpilibj.Victor;
  import edu.wpi.first.wpilibj.XboxController;
- import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
  
 
   /**
@@ -39,11 +40,13 @@
     final int IRsensorID = -1; 
     final int solePneumatic1ID = -1;
     final int solePneumatic2ID = -1;
-    final int Victor888ID = -1;
-    Victor Victor888;
-    XboxController Xbox; 
+    final int victor888ID = -1;
+    Victor victor888; 
     DigitalInput cargoDetect;
-    DoubleSolenoid solePneumatics;
+    DoubleSolenoid solePneumatics1;
+    private Robot robot;
+    private static final double speedIn = 1;
+    private static final double speedOut = -1;
 
     public enum IntakeWheelState{
       SPIN_IN,
@@ -51,50 +54,41 @@
       SPIN_STOP
     }
 
-    Manipulator() { 
-      solePneumatics = new DoubleSolenoid(solePneumatic1ID, solePneumatic2ID);
+    Manipulator(Robot robot) { 
+      this.robot = robot;
+      solePneumatics1 = new DoubleSolenoid(solePneumatic1ID, solePneumatic2ID);
       cargoDetect = new DigitalInput(IRsensorID);
-      Victor888 = new Victor(Victor888ID);
+      victor888 = new Victor(victor888ID);
+      
       
       
     } 
     
     public void update() {
-      if (cargoDetect.get())
-      {
-        Victor888.stopMotor();    
-      }
-
-      if(Xbox.getBumper(Hand.kLeft))
-      {
-        if (cargoDetect.get())
-        {
-        Victor888.set(0);
+      if (robot.intakeWheelState == IntakeWheelState.SPIN_IN) {
+        if (cargoDetect.get()) {
+          victor888.stopMotor();
         }
-
-        Victor888.set(-1);
+        else {
+          victor888.set(speedIn);
+        }
+        
       }
-      if(Xbox.getBumper(Hand.kRight))
-      {
-        Victor888.set(1);
+      else if (robot.intakeWheelState == IntakeWheelState.SPIN_OUT) {
+        victor888.set(speedOut);
       }
-    
-      if (Xbox.getAButton())
-      {
-        solePneumatics.set(DoubleSolenoid.Value.kForward);
+      else if (robot.intakeWheelState == IntakeWheelState.SPIN_STOP) {
+        victor888.stopMotor();
       }
-      else 
-      {
-        solePneumatics.set(DoubleSolenoid.Value.kReverse);
+      if (robot.solenoidPush == true) {
+        solePneumatics1.set(Value.kForward);
+      }
+      else {
+        solePneumatics1.set(Value.kReverse);
       }
 
-    }
-      
-      
+    } 
 
-
-
-      
-  }
+ }
 
   
