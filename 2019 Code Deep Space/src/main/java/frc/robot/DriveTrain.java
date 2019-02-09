@@ -7,15 +7,15 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Ultrasonic;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.util.WPILibVersion;
+
 
 /**
  * Add your docs here.
@@ -35,6 +35,12 @@ public class DriveTrain {
     private SpeedControllerGroup rightSide;
     private Joystick joyLeft;
     private Joystick joyRight;
+    private static final int solShifterPin = 0;
+    private static final int sonic1PinOut = 9;
+    private static final int sonic1PinIn = 8;
+    private static final int sonic2PinOut = 7;
+    private static final int sonic2PinIn = 6;
+    
 
     DriveTrain(Joystick joyLeft, Joystick joyRight) {
         talonLeft1 = new WPI_TalonSRX(-1);
@@ -46,28 +52,33 @@ public class DriveTrain {
         leftSide = new SpeedControllerGroup(talonLeft1, talonLeft2, talonLeft3);
         rightSide = new SpeedControllerGroup(talonRight1, talonRight2, talonRight3);
         tankDrive = new DifferentialDrive(leftSide, rightSide);
-        solShifter = new Solenoid(-1);
-        sonic1 = new Ultrasonic(-1, -1);
-        sonic2 = new Ultrasonic(-1, -1);
+        solShifter = new Solenoid(solShifterPin);
+        sonic1 = new Ultrasonic(sonic1PinOut, sonic1PinIn);
+        sonic2 = new Ultrasonic(sonic2PinOut, sonic2PinIn);
         this.joyLeft = joyLeft;
         this.joyRight = joyRight;
 
-        talonLeft2.follow(talonLeft1);
-        talonLeft3.follow(talonLeft1);
-        talonRight2.follow(talonRight1);
-        talonRight3.follow(talonRight1);
+   
         rightSide.setInverted(true);
         leftSide.setInverted(false);
-        
+
     }
 
     public void update() {
         tankDrive.tankDrive(joyLeft.getY(), joyRight.getY());
+        /*double stick1 = joyLeft.getY();
+        //if(joyLeft.getY() > 0 ){
+          talonLeft1.set(ControlMode.PercentOutput, stick1);
+
+        double stick2 = joyRight.getX();
+          talonRight1.set(ControlMode.PercentOutput, stick2);*/
+        }
         
+            
 
 
 
-    }
+    
 
 
 

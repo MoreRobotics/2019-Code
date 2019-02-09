@@ -17,11 +17,11 @@ import edu.wpi.first.wpilibj.GenericHID;
  */
 public class DriverControl {
     private static final double triggerThreshold = 0.5;
-    Robot robot;
-    Joystick joyLeft  = new Joystick(0);
-    Joystick joyRight = new Joystick(3);
-    XboxController driverController = new XboxController(0);
-    XboxController operatorController = new XboxController(1);
+    private Robot robot;
+    private Joystick joyLeft  = new Joystick(0);
+    private Joystick joyRight = new Joystick(3);
+    private XboxController driverController = new XboxController(0);
+    private XboxController operatorController = new XboxController(1);
     DriverControl(Robot robot){
         this.robot = robot;
     }
@@ -82,8 +82,14 @@ public class DriverControl {
             robot.solenoidShiftHigh = false;
         }
     }
+    
+    public Joystick getJoyLeft() {
+        return joyLeft;
+    }
 
-
+    public Joystick getJoyRight() {
+        return joyRight;
+    }
 }    
 /**
  * Plannned xbox controller button mapping

@@ -40,7 +40,8 @@ public class Robot extends TimedRobot {
   //private final int victor8881Chn = 1;
   //private Victor victor8881 = new Victor(victor8881Chn);
   //private Lift lift;
-  //private DriverControl driverControl;
+  private DriveTrain driveTrain;
+  private DriverControl driverControl;
   private XboxController xbox;
   public boolean solenoidPush;
   public Lift.liftState currentState;
@@ -50,7 +51,8 @@ public class Robot extends TimedRobot {
 
   Robot(){
    // lift = new Lift();
-    //driverControl = new DriverControl(this);
+    driverControl = new DriverControl(this);
+    driveTrain = new DriveTrain(driverControl.getJoyLeft(), driverControl.getJoyRight());
   }
   
 
@@ -143,7 +145,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    //driverControl.update();
+    driverControl.update();
+    driveTrain.update();
   }
 
   @Override
