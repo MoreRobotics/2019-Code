@@ -6,22 +6,22 @@
 
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.can.*;
+//import com.ctre.phoenix.motorcontrol.can.*;
 //import com.ctre.phoenix.motorcontrol.ControlMode;
 //import com.ctre.phoenix.motorcontrol.InvertType;
 
-import edu.wpi.first.wpilibj.AnalogPotentiometer;
-import edu.wpi.first.wpilibj.DigitalInput;
+//import edu.wpi.first.wpilibj.AnalogPotentiometer;
+//import edu.wpi.first.wpilibj.DigitalInput;
 //import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
+//import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.TimedRobot;
 //import edu.wpi.first.wpilibj.Joystick.AxisType;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+//import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.Encoder;
+//import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Ultrasonic;
-import edu.wpi.first.wpilibj.Victor;
+//import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID;
 
@@ -37,21 +37,20 @@ public class Robot extends TimedRobot {
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
-  private DifferentialDrive tankDrive;
-  private Ultrasonic sonic;
-  private final int victor8881Chn = 1;
-  private Victor victor8881 = new Victor(victor8881Chn);
-  private Lift lift;
-  private DriverControl driverControl;
+  //private final int victor8881Chn = 1;
+  //private Victor victor8881 = new Victor(victor8881Chn);
+  //private Lift lift;
+  //private DriverControl driverControl;
   private XboxController xbox;
   public boolean solenoidPush;
   public Lift.liftState currentState;
   public Lift.liftState nextState;
   public Manipulator.IntakeWheelState intakeWheelState;
+  public boolean solenoidShiftHigh;
 
   Robot(){
    // lift = new Lift();
-    driverControl = new DriverControl(this);
+    //driverControl = new DriverControl(this);
   }
   
 
@@ -76,9 +75,10 @@ public class Robot extends TimedRobot {
     //tankDrive = new DifferentialDrive(motorsLeft, motorsRight);
     //motorsLeft.setInverted(true);
     //motorsRight.setInverted(true);
-    sonic = new Ultrasonic(0,1);
-    sonic.setAutomaticMode(true);
+    //sonic = new Ultrasonic(0,1);
+    //sonic.setAutomaticMode(true);
     solenoidPush = false;
+    solenoidShiftHigh = false;
     
   
   
