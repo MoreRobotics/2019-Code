@@ -52,9 +52,6 @@ public class Lift {
         liftState nextState;
 
 
-   
-    
-
     
     Lift(){ 
         rightMotor = new TalonSRX(motor1ID);
@@ -66,30 +63,6 @@ public class Lift {
         leftMotor.set(ControlMode.Follower,motor1ID);
         leftMotor.setInverted(true);
     }
-    
-    public void teleopInit() {
-    
-        
-
-
-
-    }
-    
-
-
-
-    public void teleopPeriodic() {
-
-       
-        }
-
-        
-        
-
-
-
-    
-
 
 /**
  * Either we set stage select as able to be switched between cargo

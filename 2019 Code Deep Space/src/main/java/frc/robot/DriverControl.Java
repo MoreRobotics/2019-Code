@@ -9,6 +9,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.GenericHID;
 
 
@@ -20,14 +21,13 @@ public class DriverControl {
     private Robot robot;
     private Joystick joyLeft  = new Joystick(0);
     private Joystick joyRight = new Joystick(3);
-    private XboxController driverController = new XboxController(0);
-    private XboxController operatorController = new XboxController(1);
+    private XboxController operatorController = new XboxController(2);
     DriverControl(Robot robot){
         this.robot = robot;
     }
     public void update(){
        
-        if (operatorController.getRawAxis(-1) != 0) {
+        if (operatorController.getY(Hand.kLeft) != 0) {
             robot.nextState = Lift.liftState.MANUAL;     
         }else if (operatorController.getAButton()) {
             robot.nextState = Lift.liftState.GROUND_LEVEL;

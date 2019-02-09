@@ -37,8 +37,8 @@ public class DriveTrain {
   private Joystick joyLeft;
   private Joystick joyRight;
   private Robot robot;
-  private static final int solShifterPin1 = -1;
-  private static final int solShifterPin2 = -1;
+  private static final int solShifterPin1 = 0;
+  private static final int solShifterPin2 = 1;
   private static final int sonic1PinOut = 9;
   private static final int sonic1PinIn = 8;
   private static final int sonic2PinOut = 7;

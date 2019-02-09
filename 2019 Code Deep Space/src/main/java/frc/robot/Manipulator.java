@@ -37,10 +37,10 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
   */
 
   public class Manipulator {
-    final int IRsensorID = -1; 
-    final int solePneumatic1ID = -1;
-    final int solePneumatic2ID = -1;
-    final int victor888ID = -1;
+    final int IRsensorID = 5; 
+    final int solePneumatic1ID = 2;
+    final int solePneumatic2ID = 3;
+    final int victor888ID = 9;
     Victor victor888; 
     DigitalInput cargoDetect;
     DoubleSolenoid solePneumatics1;
