@@ -51,10 +51,20 @@ public class DriveTrain {
         sonic2 = new Ultrasonic(-1, -1);
         this.joyLeft = joyLeft;
         this.joyRight = joyRight;
+
+        talonLeft2.follow(talonLeft1);
+        talonLeft3.follow(talonLeft1);
+        talonRight2.follow(talonRight1);
+        talonRight3.follow(talonRight1);
+        rightSide.setInverted(true);
+        leftSide.setInverted(false);
+        
     }
 
     public void update() {
         tankDrive.tankDrive(joyLeft.getY(), joyRight.getY());
+        
+
 
 
     }
