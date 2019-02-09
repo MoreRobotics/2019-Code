@@ -50,10 +50,11 @@ public class Robot extends TimedRobot {
   public Manipulator.IntakeWheelState intakeWheelState;
   public boolean solenoidShiftHigh;
 
+
   Robot(){
    // lift = new Lift();
     driverControl = new DriverControl(this);
-    driveTrain = new DriveTrain(driverControl.getJoyLeft(), driverControl.getJoyRight());
+    driveTrain = new DriveTrain(driverControl.getJoyLeft(), driverControl.getJoyRight(),this);
     manipulator = new Manipulator(this);
   }
   
