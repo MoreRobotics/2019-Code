@@ -98,7 +98,7 @@ public class Lift {
             break;
             case CARGO_LEVEL1:
             //Cargo level 1 (2ft 3.5 in)
-            target = 70 * liftEncoderMultiplier; 
+            target = 70 * liftEncoderMultiplier;
             rightMotor.set(ControlMode.Position, target);
             
             break;

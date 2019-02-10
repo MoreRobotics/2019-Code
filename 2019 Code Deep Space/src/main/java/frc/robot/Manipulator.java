@@ -37,13 +37,13 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
   */
 
   public class Manipulator {
-    final int IRsensorID = 5; 
-    final int solePneumatic1ID = 2;
-    final int solePneumatic2ID = 3;
-    final int victor888ID = 9;
-    Victor victor888; 
-    DigitalInput cargoDetect;
-    DoubleSolenoid solePneumatics1;
+    private final int IRsensorID = 5; 
+    private final int solePneumatic1ID = 2;
+    private final int solePneumatic2ID = 3;
+    private final int victor888ID = 9;
+    private Victor victor888; 
+    private DigitalInput cargoDetect;
+    private DoubleSolenoid solePneumatics1;
     private Robot robot;
     private static final double speedIn = 1;
     private static final double speedOut = -1;

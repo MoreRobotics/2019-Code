@@ -49,6 +49,7 @@ public class Robot extends TimedRobot {
   public Lift.liftState nextState;
   public Manipulator.IntakeWheelState intakeWheelState;
   public boolean solenoidShiftHigh;
+  
 
 
   Robot(){

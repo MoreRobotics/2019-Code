@@ -43,15 +43,21 @@ public class DriveTrain {
   private static final int sonic1PinIn = 8;
   private static final int sonic2PinOut = 7;
   private static final int sonic2PinIn = 6;
+  private static final int talonLeft1ID = 0;
+  private static final int talonLeft2ID = 1;
+  private static final int talonLeft3ID = 2;
+  private static final int talonRight1ID = 3;
+  private static final int talonRight2ID = 4;
+  private static final int talonRight3ID = 5;
   
 
   DriveTrain(Joystick joyLeft, Joystick joyRight, Robot robot) {
-    talonLeft1 = new WPI_TalonSRX(-1);
-    talonLeft2 = new WPI_TalonSRX(-1);
-    talonLeft3 = new WPI_TalonSRX(-1);
-    talonRight1 = new WPI_TalonSRX(-1);
-    talonRight2 = new WPI_TalonSRX(-1);
-    talonRight3 = new WPI_TalonSRX(-1);
+    talonLeft1 = new WPI_TalonSRX(talonLeft1ID);
+    talonLeft2 = new WPI_TalonSRX(talonLeft2ID);
+    talonLeft3 = new WPI_TalonSRX(talonLeft3ID);
+    talonRight1 = new WPI_TalonSRX(talonRight1ID);
+    talonRight2 = new WPI_TalonSRX(talonRight2ID);
+    talonRight3 = new WPI_TalonSRX(talonRight3ID);
     leftSide = new SpeedControllerGroup(talonLeft1, talonLeft2, talonLeft3);
     rightSide = new SpeedControllerGroup(talonRight1, talonRight2, talonRight3);
     tankDrive = new DifferentialDrive(leftSide, rightSide);
