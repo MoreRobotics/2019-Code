@@ -1,3 +1,4 @@
+
 /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
@@ -49,7 +50,7 @@ public class DriveTrain {
   private static final int talonRight1ID = 3;
   private static final int talonRight2ID = 4;
   private static final int talonRight3ID = 5;
-  
+
 
   DriveTrain(Joystick joyLeft, Joystick joyRight, Robot robot) {
     talonLeft1 = new WPI_TalonSRX(talonLeft1ID);
@@ -70,12 +71,20 @@ public class DriveTrain {
 
     rightSide.setInverted(true);
     leftSide.setInverted(false);
-
-
+    }
+    public Joystick getJoyLeft() {
+      return joyLeft;
   }
+
+  public Joystick getJoyRight() {
+      return joyRight;
+  }
+
+ 
 
   public void update() {
     tankDrive.tankDrive(joyLeft.getY(), joyRight.getY());
+
     
     if (robot.solenoidShiftHigh == true) {
       solShifter.set(Value.kForward);

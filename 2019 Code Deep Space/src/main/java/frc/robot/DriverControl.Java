@@ -10,6 +10,10 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
+
 import edu.wpi.first.wpilibj.GenericHID;
 
 
@@ -85,7 +89,12 @@ public class DriverControl {
     
     public Joystick getJoyLeft() {
         return joyLeft;
+        
+
+        
     }
+
+    
 
     public Joystick getJoyRight() {
         return joyRight;
@@ -104,7 +113,8 @@ public class DriverControl {
  * JoyStick2(Right Side)- Unassinged 
  * A Button- Stage 
  * B Button- Stage 
- * X Button- Stage
+ * X Button- Stage0=-=
+ * 
  * Y Button- Stage
  * Back button- Possibly stage level reset (Tyler) 
  * Start Button- Unassinged 

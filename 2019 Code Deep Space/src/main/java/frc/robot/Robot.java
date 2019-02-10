@@ -49,6 +49,7 @@ public class Robot extends TimedRobot {
   public Lift.liftState nextState;
   public Manipulator.IntakeWheelState intakeWheelState;
   public boolean solenoidShiftHigh;
+ 
   
 
 
@@ -161,7 +162,10 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {  
     System.out.println(xbox.getTriggerAxis(GenericHID.Hand.kRight));
-
+      
   }
-  
+
+
 }
+  
+
