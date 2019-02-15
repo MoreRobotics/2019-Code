@@ -71,16 +71,7 @@ public class DriveTrain {
 
     rightSide.setInverted(true);
     leftSide.setInverted(false);
-    }
-    public Joystick getJoyLeft() {
-      return joyLeft;
   }
-
-  public Joystick getJoyRight() {
-      return joyRight;
-  }
-
- 
 
   public void update() {
     tankDrive.tankDrive(joyLeft.getY(), joyRight.getY());

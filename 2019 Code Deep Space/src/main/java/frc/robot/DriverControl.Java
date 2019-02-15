@@ -99,7 +99,11 @@ public class DriverControl {
     public Joystick getJoyRight() {
         return joyRight;
     }
-}    
+    
+    public XboxController getXboxController() {
+        return operatorController;
+    }
+}  
 /**
  * Plannned xbox controller button mapping
  * Riley Mackey 2/2/2019

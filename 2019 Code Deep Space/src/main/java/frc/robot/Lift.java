@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 //import edu.wpi.first.wpilibj.Encoder;
 //import edu.wpi.first.wpilibj.SpeedControllerGroup;
 //import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.XboxController;
 
 /**
  * Add your docs here.
@@ -36,6 +37,7 @@ public class Lift {
     VictorSPX leftMotor;
     DigitalInput botSwitch;
     //DigitalInput topSwitch;
+    XboxController xbox;
 
     public enum liftState{
         GROUND_LEVEL, 
@@ -53,7 +55,7 @@ public class Lift {
 
 
     
-    Lift(){ 
+    Lift(XboxController xbox){ 
         rightMotor = new TalonSRX(motor1ID);
         leftMotor = new VictorSPX(motor2ID);
 
@@ -62,6 +64,7 @@ public class Lift {
         liftEncoderMultiplier = 100;
         leftMotor.set(ControlMode.Follower,motor1ID);
         leftMotor.setInverted(true);
+        this.xbox = xbox;
     }
 
 /**
@@ -127,7 +130,7 @@ public class Lift {
             
             break;
             case MANUAL:
-            //rightMotor.set(ControlMode.PercentOutput, Xbox.getRawAxis(-1));
+            rightMotor.set(ControlMode.PercentOutput, xbox.getRawAxis(-1));
                 //need to find the axis for the joystick
         }
     }

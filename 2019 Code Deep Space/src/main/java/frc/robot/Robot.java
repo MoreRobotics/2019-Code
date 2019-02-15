@@ -39,7 +39,7 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   //private final int victor8881Chn = 1;
   //private Victor victor8881 = new Victor(victor8881Chn);
-  //private Lift lift;
+  private Lift lift;
   private DriveTrain driveTrain;
   private DriverControl driverControl;
   private Manipulator manipulator;
@@ -58,6 +58,8 @@ public class Robot extends TimedRobot {
     driverControl = new DriverControl(this);
     driveTrain = new DriveTrain(driverControl.getJoyLeft(), driverControl.getJoyRight(),this);
     manipulator = new Manipulator(this);
+    lift = new Lift(driverControl.getXboxController());
+
   }
   
 
