@@ -22,19 +22,17 @@ import edu.wpi.first.wpilibj.XboxController;
  * Add your docs here.
  */
 public class Lift {
-    final int botSwitchPin = -1;
+    final int botSwitchPin = 6;
     //final int topSwitchPin = -1;  
-    final int encoderPinA = -1;
-    final int encoderPinB = -1;
-    final int motor1ID  = -1;
-    final int motor2ID = -1;
+    final int motor1ID = 7;
+    final int motor2ID = 8;
 
     final double maxSpeedUp = .5;
     final double maxSpeedDown = -.5;
     double target;
     double liftEncoderMultiplier;
-    TalonSRX rightMotor;
-    VictorSPX leftMotor;
+    TalonSRX leftMotor;
+    VictorSPX rightMotor;
     DigitalInput botSwitch;
     //DigitalInput topSwitch;
     XboxController xbox;
@@ -56,14 +54,14 @@ public class Lift {
 
     
     Lift(XboxController xbox){ 
-        rightMotor = new TalonSRX(motor1ID);
-        leftMotor = new VictorSPX(motor2ID);
+        leftMotor = new TalonSRX(motor1ID);
+        rightMotor = new VictorSPX(motor2ID);
 
-        botSwitch = new DigitalInput(botSwitchPin);
+        //botSwitch = new DigitalInput(botSwitchPin);
         //topSwitch = new DigitalInput(topSwitchPin);
         liftEncoderMultiplier = 100;
-        leftMotor.set(ControlMode.Follower,motor1ID);
-        leftMotor.setInverted(true);
+        rightMotor.follow(leftMotor);
+        rightMotor.setInverted(true);
         this.xbox = xbox;
     }
 
@@ -85,7 +83,7 @@ public class Lift {
             // all targets are measurements in cm. 
             // each level adds 71 (2ft 4 in) cm to the previous 
             target = 0;
-            rightMotor.set(ControlMode.Position, target);
+            leftMotor.set(ControlMode.Position, target);
             
             //if (liftEncoder.get() < )
             
@@ -96,41 +94,41 @@ public class Lift {
             case HATCH_LEVEL1:
             //Hatch level 1 (1ft 7in)
             target = 48 * liftEncoderMultiplier;
-            rightMotor.set(ControlMode.Position, target);
+            leftMotor.set(ControlMode.Position, target);
             
             break;
             case CARGO_LEVEL1:
             //Cargo level 1 (2ft 3.5 in)
             target = 70 * liftEncoderMultiplier;
-            rightMotor.set(ControlMode.Position, target);
+            leftMotor.set(ControlMode.Position, target);
             
             break;
             case HATCH_LEVEL2:
             //Hatch level 2 
             target = 119 * liftEncoderMultiplier; 
-            rightMotor.set(ControlMode.Position, target);
+            leftMotor.set(ControlMode.Position, target);
             
             break;
             case CARGO_LEVEL2:
             //cargo level 2
             target = 141 * liftEncoderMultiplier;
-            rightMotor.set(ControlMode.Position, target);
+            leftMotor.set(ControlMode.Position, target);
             
             break;
             case HATCH_LEVEL3:
             //Hatch level 3
             target = 190 * liftEncoderMultiplier;
-            rightMotor.set(ControlMode.Position, target);
+            leftMotor.set(ControlMode.Position, target);
             
             break;
             case CARGO_LEVEL3:
             //Cargo level 3
             target = 212 * liftEncoderMultiplier;
-            rightMotor.set(ControlMode.Position, target);
+            leftMotor.set(ControlMode.Position, target);
             
             break;
             case MANUAL:
-            rightMotor.set(ControlMode.PercentOutput, xbox.getRawAxis(-1));
+            leftMotor.set(ControlMode.PercentOutput, xbox.getRawAxis(1));
                 //need to find the axis for the joystick
         }
     }

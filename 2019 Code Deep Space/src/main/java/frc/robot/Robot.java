@@ -57,9 +57,9 @@ public class Robot extends TimedRobot {
    // lift = new Lift();
     driverControl = new DriverControl(this);
     driveTrain = new DriveTrain(driverControl.getJoyLeft(), driverControl.getJoyRight(),this);
-    manipulator = new Manipulator(this);
+    //manipulator = new Manipulator(this);
     lift = new Lift(driverControl.getXboxController());
-
+    
   }
   
 
@@ -149,11 +149,13 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     driverControl.update();
     driveTrain.update();
+    lift.setState(nextState);
+  
   }
 
   @Override
   public void testInit() {
-    xbox = new XboxController(2); 
+    
  
   }
 
@@ -163,11 +165,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testPeriodic() {  
-    System.out.println(xbox.getTriggerAxis(GenericHID.Hand.kRight));
+    driveTrain.motorRun();
       
   }
 
 
 }
   
+
 

@@ -44,12 +44,12 @@ public class DriveTrain {
   private static final int sonic1PinIn = 8;
   private static final int sonic2PinOut = 7;
   private static final int sonic2PinIn = 6;
-  private static final int talonLeft1ID = 0;
-  private static final int talonLeft2ID = 1;
-  private static final int talonLeft3ID = 2;
-  private static final int talonRight1ID = 3;
-  private static final int talonRight2ID = 4;
-  private static final int talonRight3ID = 5;
+  private static final int talonLeft1ID = 1;
+  private static final int talonLeft2ID = 2;
+  private static final int talonLeft3ID = 3;
+  private static final int talonRight1ID = 4;
+  private static final int talonRight2ID = 5;
+  private static final int talonRight3ID = 6;
 
 
   DriveTrain(Joystick joyLeft, Joystick joyRight, Robot robot) {
@@ -68,13 +68,14 @@ public class DriveTrain {
     this.joyLeft = joyLeft;
     this.joyRight = joyRight;
     this.robot = robot;
-
+    talonLeft1.setInverted(true);
+    talonRight3.setInverted(true);
     rightSide.setInverted(true);
     leftSide.setInverted(false);
   }
 
   public void update() {
-    tankDrive.tankDrive(joyLeft.getY(), joyRight.getY());
+    tankDrive.tankDrive(-joyLeft.getY(), joyRight.getY());
 
     
     if (robot.solenoidShiftHigh == true) {
@@ -84,8 +85,12 @@ public class DriveTrain {
       solShifter.set(Value.kReverse);
     }
 
+
   }
-    
+  public void motorRun(){
+    tankDrive.tankDrive(0.3, 0.3);
+
+    }
           
 
 
