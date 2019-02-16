@@ -98,42 +98,42 @@ public class Lift {
             case HATCH_LEVEL1:
             //Hatch level 1 (1ft 7in)
             target = 48 * liftEncoderMultiplier;
-            leftMotor.set(ControlMode.Position, target);
+            leftMotor.set(ControlMode.MotionMagic, target);
             System.out.println("HatchLevel1 " + target);
 
             break;
             case CARGO_LEVEL1:
             //Cargo level 1 (2ft 3.5 in)
             target = 70 * liftEncoderMultiplier;
-            leftMotor.set(ControlMode.Position, target);
+            leftMotor.set(ControlMode.MotionMagic, target);
             System.out.println("CargoLevel1 " + target);
 
             break;
             case HATCH_LEVEL2:
             //Hatch level 2 
             target = 119 * liftEncoderMultiplier; 
-            leftMotor.set(ControlMode.Position, target);
+            leftMotor.set(ControlMode.MotionMagic, target);
             System.out.println("HatchLevel2 " + target);
 
             break;
             case CARGO_LEVEL2:
             //cargo level 2
             target = 141 * liftEncoderMultiplier;
-            leftMotor.set(ControlMode.Position, target);
+            leftMotor.set(ControlMode.MotionMagic, target);
             System.out.println("CargoLevel2 " + target);
 
             break;
             case HATCH_LEVEL3:
             //Hatch level 3
             target = 190 * liftEncoderMultiplier;
-            leftMotor.set(ControlMode.Position, target);
+            leftMotor.set(ControlMode.MotionMagic, target);
             System.out.println("HatchLevel3 " + target);
 
             break;
             case CARGO_LEVEL3:
             //Cargo level 3
             target = 212 * liftEncoderMultiplier;
-            leftMotor.set(ControlMode.Position, target);
+            leftMotor.set(ControlMode.MotionMagic, target);
             System.out.println("CatchLevel3 " + target);
 
             break;
