@@ -11,12 +11,14 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+
 
 
 /**
@@ -50,6 +52,8 @@ public class DriveTrain {
   private static final int talonRight1ID = 4;
   private static final int talonRight2ID = 5;
   private static final int talonRight3ID = 6;
+  private Compressor compressor;
+ 
 
 
   DriveTrain(Joystick joyLeft, Joystick joyRight, Robot robot) {
@@ -72,6 +76,8 @@ public class DriveTrain {
     talonRight3.setInverted(true);
     rightSide.setInverted(true);
     leftSide.setInverted(false);
+    compressor = new Compressor();
+    compressor.setClosedLoopControl(true);
   }
 
   public void update() {
