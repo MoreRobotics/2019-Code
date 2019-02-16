@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
  * Add your docs here.
  */
 public class Lift {
-    final int botSwitchPin = 6;
+    final int botSwitchPin = 1;
     //final int topSwitchPin = -1;  
     final int motor1ID = 7;
     final int motor2ID = 8;
@@ -58,11 +58,11 @@ public class Lift {
         leftMotor = new TalonSRX(motor1ID);
         rightMotor = new VictorSPX(motor2ID);
 
-        //botSwitch = new DigitalInput(botSwitchPin);
+        botSwitch = new DigitalInput(botSwitchPin);
         //topSwitch = new DigitalInput(topSwitchPin);
-        liftEncoderMultiplier = 100;
+        liftEncoderMultiplier = 141;
         rightMotor.follow(leftMotor);
-        rightMotor.setInverted(true);
+        leftMotor.setInverted(true);
         this.xbox = xbox;
     }
 
@@ -85,7 +85,7 @@ public class Lift {
             // each level adds 71 (2ft 4 in) cm to the previous 
             target = 0;
             leftMotor.set(ControlMode.Position, target);
-            
+            System.out.println("GroundLevel " + target);
             //if (liftEncoder.get() < )
             
         
@@ -96,41 +96,47 @@ public class Lift {
             //Hatch level 1 (1ft 7in)
             target = 48 * liftEncoderMultiplier;
             leftMotor.set(ControlMode.Position, target);
-            
+            System.out.println("HatchLevel1 " + target);
+
             break;
             case CARGO_LEVEL1:
             //Cargo level 1 (2ft 3.5 in)
             target = 70 * liftEncoderMultiplier;
             leftMotor.set(ControlMode.Position, target);
-            
+            System.out.println("CargoLevel1 " + target);
+
             break;
             case HATCH_LEVEL2:
             //Hatch level 2 
             target = 119 * liftEncoderMultiplier; 
             leftMotor.set(ControlMode.Position, target);
-            
+            System.out.println("HatchLevel2 " + target);
+
             break;
             case CARGO_LEVEL2:
             //cargo level 2
             target = 141 * liftEncoderMultiplier;
             leftMotor.set(ControlMode.Position, target);
-            
+            System.out.println("CargoLevel2 " + target);
+
             break;
             case HATCH_LEVEL3:
             //Hatch level 3
             target = 190 * liftEncoderMultiplier;
             leftMotor.set(ControlMode.Position, target);
-            
+            System.out.println("HatchLevel3 " + target);
+
             break;
             case CARGO_LEVEL3:
             //Cargo level 3
             target = 212 * liftEncoderMultiplier;
             leftMotor.set(ControlMode.Position, target);
-            
+            System.out.println("CatchLevel3 " + target);
+
             break;
             case MANUAL:
-            
-            if(botSwitch.get() && xbox.getY(Hand.kLeft) < 0){
+            leftMotor.set(ControlMode.PercentOutput, xbox.getY(Hand.kLeft));
+            /*if(!botSwitch.get() && xbox.getY(Hand.kLeft) < 0){
                 leftMotor.set(ControlMode.PercentOutput,0);
                 leftMotor.getSensorCollection().setQuadraturePosition(0, 0);
             }else if(leftMotor.getSensorCollection().getQuadraturePosition() > maxEncoder 
@@ -138,9 +144,9 @@ public class Lift {
                 leftMotor.set(ControlMode.PercentOutput, 0);
             }else {
                 leftMotor.set(ControlMode.PercentOutput, xbox.getY(Hand.kLeft));
-            }
+            }*/
             
-            if(botSwitch.get()){
+            if(!botSwitch.get()){
                 leftMotor.getSensorCollection().setQuadraturePosition(0, 0);
                 
             }
