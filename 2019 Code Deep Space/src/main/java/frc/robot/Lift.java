@@ -64,7 +64,10 @@ public class Lift {
         rightMotor.follow(leftMotor);
         leftMotor.setInverted(true);
         this.xbox = xbox;
+
+        //Use Github examples for motion magic
     }
+
 
 /**
  * Either we set stage select as able to be switched between cargo
@@ -84,7 +87,7 @@ public class Lift {
             // all targets are measurements in cm. 
             // each level adds 71 (2ft 4 in) cm to the previous 
             target = 0;
-            leftMotor.set(ControlMode.Position, target);
+            leftMotor.set(ControlMode.MotionMagic, target);
             System.out.println("GroundLevel " + target);
             //if (liftEncoder.get() < )
             
