@@ -31,7 +31,7 @@ public class DriverControl {
     }
     public void update(){
        
-        if (operatorController.getY(Hand.kLeft) != 0) {
+        if (operatorController.getY(Hand.kLeft) < -0.1 || operatorController.getY(Hand.kLeft) > 0.1) {
             robot.nextState = Lift.liftState.MANUAL;     
         }else if (operatorController.getAButton()) {
             robot.nextState = Lift.liftState.GROUND_LEVEL;

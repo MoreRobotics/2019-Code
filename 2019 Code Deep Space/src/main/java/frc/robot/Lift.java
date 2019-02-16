@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 //import edu.wpi.first.wpilibj.SpeedControllerGroup;
 //import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 
 /**
  * Add your docs here.
@@ -36,7 +37,7 @@ public class Lift {
     DigitalInput botSwitch;
     //DigitalInput topSwitch;
     XboxController xbox;
-
+    final int maxEncoder = 700;
     public enum liftState{
         GROUND_LEVEL, 
         CARGO_LEVEL1, 
@@ -128,7 +129,21 @@ public class Lift {
             
             break;
             case MANUAL:
-            leftMotor.set(ControlMode.PercentOutput, xbox.getRawAxis(1));
+            
+            if(botSwitch.get() && xbox.getY(Hand.kLeft) < 0){
+                leftMotor.set(ControlMode.PercentOutput,0);
+                leftMotor.getSensorCollection().setQuadraturePosition(0, 0);
+            }else if(leftMotor.getSensorCollection().getQuadraturePosition() > maxEncoder 
+                && xbox.getY(Hand.kLeft) > 0){
+                leftMotor.set(ControlMode.PercentOutput, 0);
+            }else {
+                leftMotor.set(ControlMode.PercentOutput, xbox.getY(Hand.kLeft));
+            }
+            
+            if(botSwitch.get()){
+                leftMotor.getSensorCollection().setQuadraturePosition(0, 0);
+                
+            }
                 //need to find the axis for the joystick
         }
     }
