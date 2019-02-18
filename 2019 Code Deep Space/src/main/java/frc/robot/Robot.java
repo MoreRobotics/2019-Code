@@ -24,7 +24,11 @@ import frc.robot.Lift.liftState;
 import edu.wpi.first.wpilibj.Ultrasonic;
 //import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.SendableCameraWrapper;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardContainer;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.cameraserver.CameraServer;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -50,6 +54,7 @@ public class Robot extends TimedRobot {
   public Lift.liftState nextState;
   public Manipulator.IntakeWheelState intakeWheelState;
   public boolean solenoidShiftHigh;
+  public static CameraServer rPICameraServer;
  
   
 
@@ -60,6 +65,10 @@ public class Robot extends TimedRobot {
     driveTrain = new DriveTrain(driverControl.getJoyLeft(), driverControl.getJoyRight(),this);
     //manipulator = new Manipulator(this);
     lift = new Lift(driverControl.getXboxController());
+    
+
+
+    
     
   }
   
@@ -84,8 +93,16 @@ public class Robot extends TimedRobot {
     //sonic.setAutomaticMode(true);
     solenoidPush = false;
     solenoidShiftHigh = false;
-    nextState = liftState.MANUAL;
     
+    
+    
+    /*cameraStream.addDefault("Auto1", 1);
+    cameraStream.addObject("Auto2", 2);
+    Shuffleboard.putData("Autonomous routine", cameraStream);
+    SendableChooser<Integer> cameraStream = new SendableChooser<>();
+    //ShuffleboardContainer.add(SendableCameraWrapper.wrap(rPICameraServer.getVideo()));
+    rPICameraServer.getInstance().getServer();
+    */
   
   
 
@@ -120,6 +137,7 @@ public class Robot extends TimedRobot {
     // autoSelected = SmartDashboard.getString("Auto Selector",
     // defaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
+  
   }
 
   /**
@@ -152,7 +170,8 @@ public class Robot extends TimedRobot {
     driverControl.update();
     driveTrain.update();
     lift.setState(nextState);
-  
+    
+    
   }
 
   @Override

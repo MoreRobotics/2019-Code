@@ -8,11 +8,15 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 //import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
+
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Talon;
 //import edu.wpi.first.wpilibj.Encoder;
 //import edu.wpi.first.wpilibj.SpeedControllerGroup;
 //import edu.wpi.first.wpilibj.XboxController;
@@ -32,12 +36,17 @@ public class Lift {
     final double maxSpeedDown = -.5;
     double target;
     double liftEncoderMultiplier;
-    TalonSRX leftMotor;
+    public TalonSRX leftMotor;
     VictorSPX rightMotor;
     DigitalInput botSwitch;
     //DigitalInput topSwitch;
     XboxController xbox;
     final int maxEncoder = 700;
+    public FeedbackDevice liftEncoder;
+    StringBuilder _sb;
+    Object motorOutput;
+    
+    
     public enum liftState{
         GROUND_LEVEL, 
         CARGO_LEVEL1, 
@@ -57,13 +66,18 @@ public class Lift {
     Lift(XboxController xbox){ 
         leftMotor = new TalonSRX(motor1ID);
         rightMotor = new VictorSPX(motor2ID);
-
+        leftMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
         botSwitch = new DigitalInput(botSwitchPin);
         //topSwitch = new DigitalInput(topSwitchPin);
         liftEncoderMultiplier = 141;
         rightMotor.follow(leftMotor);
         leftMotor.setInverted(true);
         this.xbox = xbox;
+        leftMotor.configMotionCruiseVelocity(15, 0);
+        leftMotor.configMotionAcceleration(6, 0);
+        StringBuilder _sb = new StringBuilder();
+
+         
 
         //Use Github examples for motion magic
     }
@@ -80,6 +94,9 @@ public class Lift {
  
 
     public void setState(liftState stage) {
+        double moterOutput = leftMotor.getMotorOutputPercent();
+        _sb.append(motorOutput);
+
         switch(stage) {
             case GROUND_LEVEL: 
             //Ground level
