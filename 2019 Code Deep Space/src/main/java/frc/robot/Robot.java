@@ -148,16 +148,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-    System.out.println("RT-MWK06");
-    switch (m_autoSelected) {
-      case kCustomAuto:
-        // Put custom auto code here
-        break;
-      case kDefaultAuto:
-      default:
-        // Put default auto code here
-        break;
-    }
+    driverControl.update();
+    driveTrain.update();
+    lift.setState(nextState);
+    counter++;
+    if(counter %5 == 0){
+      lift.updateSmartDashboard();
+    } 
   }
 
   @Override
