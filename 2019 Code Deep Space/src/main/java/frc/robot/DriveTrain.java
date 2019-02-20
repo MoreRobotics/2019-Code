@@ -92,22 +92,22 @@ public class DriveTrain {
   public void update() {
     // tankDrive.tankDrive(-joyLeft.getY(), joyRight.getY());
 
-    talonLeft1.set(ControlMode.PercentOutput, -joyLeft.getY());
-    talonRight1.set(ControlMode.PercentOutput, joyRight.getY());
+    talonLeft1.set(ControlMode.PercentOutput, (Math.abs(-joyLeft.getY()) < 0.1 ? 0 : -joyLeft.getY()));
+    talonRight1.set(ControlMode.PercentOutput, (Math.abs(joyRight.getY()) < 0.1 ? 0 : joyRight.getY()));
     
     if (robot.solenoidShiftHigh == true) {
-      if(solShifter.get() == Value.kForward){
+      /*if(solShifter.get() == Value.kForward){
         solShifter.set(Value.kOff);
-      }else{
+      }else{*/
         solShifter.set(Value.kForward);
-      }
+      //}
     }
     else {
-      if(solShifter.get() == Value.kReverse){
+      /*if(solShifter.get() == Value.kReverse){
         solShifter.set(Value.kOff);
-      }else{
+      }else{*/
         solShifter.set(Value.kReverse);
-      }
+      //}
     }                                                                                                                                                                                                                                                                                                                                                                                      
 
 

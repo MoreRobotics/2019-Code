@@ -72,20 +72,31 @@ public class Lift {
         rightMotor.follow(leftMotor);
         rightMotor.setInverted(true);
         this.xbox = xbox;
-        leftMotor.configMotionCruiseVelocity(15, 0);
-        leftMotor.configMotionAcceleration(6, 0);
-        SmartDashboard.putNumber("Lift kp", 0);
+        leftMotor.configMotionCruiseVelocity(4000, 0);
+        leftMotor.configMotionAcceleration(12000, 0);
+        SmartDashboard.putNumber("Lift kp", 3);
         SmartDashboard.putNumber("Lift ki", 0);
         SmartDashboard.putNumber("Lift kd", 0);
         SmartDashboard.putNumber("Lift Encoder Coefficient", 463.28);
-        SmartDashboard.putNumber("Lift Cruise Velocity", 15);
-        SmartDashboard.putNumber("Lift Acceleration", 6);
+        SmartDashboard.putNumber("Lift Cruise Velocity", 4000);
+        SmartDashboard.putNumber("Lift Acceleration", 12000);
         SmartDashboard.putNumber("Lift Max Height", 80.5);
         leftMotor.setSensorPhase(true);
+
 
          
 
         //Use Github examples for motion magic
+    }
+
+    public void init() {
+        leftMotor.config_kP(0, SmartDashboard.getNumber("Lift kp", 3), 0);
+        leftMotor.config_kI(0, SmartDashboard.getNumber("Lift ki", 0), 0);
+        leftMotor.config_kD(0, SmartDashboard.getNumber("Lift kd", 0), 0);
+        liftEncoderMultiplier = 1 / (SmartDashboard.getNumber("Lift Encoder Coefficient", 463.28));
+        leftMotor.configMotionCruiseVelocity((int)(SmartDashboard.getNumber("Lift Cruise Velocity", 4000)), 0);
+        leftMotor.configMotionAcceleration((int)(SmartDashboard.getNumber("Lift Acceleration", 12000)), 0);
+        
     }
 
 
@@ -99,18 +110,14 @@ public class Lift {
  */
  
     public void updateSmartDashboard(){
-        leftMotor.config_kP(0, SmartDashboard.getNumber("Lift kp", 3), 50);
-        leftMotor.config_kI(0, SmartDashboard.getNumber("Lift ki", 0), 50);
-        leftMotor.config_kD(0, SmartDashboard.getNumber("Lift kd", 0), 50);
-        liftEncoderMultiplier = 1 / (SmartDashboard.getNumber("Lift Encoder Coefficient", 463.28));
-        leftMotor.configMotionCruiseVelocity((int)(SmartDashboard.getNumber("Lift Cruise Velocity", 4000)), 0);
-        leftMotor.configMotionAcceleration((int)(SmartDashboard.getNumber("Lift Acceleration", 12000)), 0);
         SmartDashboard.putNumber("Lift Position", leftMotor.getSelectedSensorPosition() * liftEncoderMultiplier);
         SmartDashboard.putNumber("Lift Velocity", leftMotor.getSelectedSensorVelocity());
         SmartDashboard.putNumber("Lift Motor", leftMotor.getMotorOutputPercent());
     }
 
     public void setState(liftState stage) {
+        leftMotor.config_kP(0, SmartDashboard.getNumber("Lift kp", 3), 3);
+
         switch(stage) {
             case GROUND_LEVEL: 
             //Ground level

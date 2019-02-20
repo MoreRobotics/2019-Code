@@ -38,15 +38,16 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 
   public class Manipulator {
     private final int IRsensorID = 5; 
-    private final int solePneumatic1ID = 2;
-    private final int solePneumatic2ID = 3;
-    private final int victor888ID = 9;
+    private final int solePneumatic1ID = 6;
+    private final int solePneumatic2ID = 7;
+    private final int victor888ID = 0;
     private Victor victor888; 
     private DigitalInput cargoDetect;
     public DoubleSolenoid solePneumatics1;
     private Robot robot;
-    private static final double speedIn = 1;
+    private static final double speedIn = .5;
     private static final double speedOut = -1;
+    private int counter = 0;
 
     public enum IntakeWheelState{
       SPIN_IN,
@@ -66,13 +67,7 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
     
     public void update() {
       if (robot.intakeWheelState == IntakeWheelState.SPIN_IN) {
-        if (cargoDetect.get()) {
-          victor888.stopMotor();
-        }
-        else {
           victor888.set(speedIn);
-        }
-        
       }
       else if (robot.intakeWheelState == IntakeWheelState.SPIN_OUT) {
         victor888.set(speedOut);
@@ -82,6 +77,10 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
       }
       if (robot.solenoidPush == true) {
         solePneumatics1.set(Value.kForward);
+        if (counter++ > 50) {
+          robot.solenoidPush = false;
+          counter = 0;
+        }
       }
       else {
         solePneumatics1.set(Value.kReverse);

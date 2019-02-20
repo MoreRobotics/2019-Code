@@ -24,7 +24,7 @@ public class DriverControl {
     private static final double triggerThreshold = 0.5;
     private Robot robot;
     private Joystick joyLeft  = new Joystick(0);
-    private Joystick joyRight = new Joystick(3);
+    private Joystick joyRight = new Joystick(1);
     private XboxController operatorController = new XboxController(2);
     DriverControl(Robot robot){
         this.robot = robot;

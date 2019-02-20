@@ -67,7 +67,7 @@ public class Robot extends TimedRobot {
    // lift = new Lift();
     driverControl = new DriverControl(this);
     driveTrain = new DriveTrain(driverControl.getJoyLeft(), driverControl.getJoyRight(),this);
-    //manipulator = new Manipulator(this);
+    manipulator = new Manipulator(this);
     lift = new Lift(driverControl.getXboxController());
     
 
@@ -99,6 +99,7 @@ public class Robot extends TimedRobot {
     solenoidShiftHigh = false;
     driveTrain.solShifter.set(Value.kReverse);
     manipulator.solePneumatics1.set(Value.kReverse);
+    lift.init();
     
     
     
@@ -172,9 +173,10 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     driverControl.update();
     driveTrain.update();
+    manipulator.update();
     lift.setState(nextState);
     counter++;
-    if(counter %5 == 0){
+    if(counter %50 == 0){
       lift.updateSmartDashboard();
     }
     
