@@ -24,6 +24,7 @@ import frc.robot.Lift.liftState;
 import edu.wpi.first.wpilibj.Ultrasonic;
 //import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.shuffleboard.SendableCameraWrapper;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardContainer;
@@ -96,6 +97,8 @@ public class Robot extends TimedRobot {
     //sonic.setAutomaticMode(true);
     solenoidPush = false;
     solenoidShiftHigh = false;
+    driveTrain.solShifter.set(Value.kReverse);
+    manipulator.solePneumatics1.set(Value.kReverse);
     
     
     

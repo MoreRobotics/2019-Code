@@ -43,7 +43,7 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
     private final int victor888ID = 9;
     private Victor victor888; 
     private DigitalInput cargoDetect;
-    private DoubleSolenoid solePneumatics1;
+    public DoubleSolenoid solePneumatics1;
     private Robot robot;
     private static final double speedIn = 1;
     private static final double speedOut = -1;

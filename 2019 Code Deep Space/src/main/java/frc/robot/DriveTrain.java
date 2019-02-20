@@ -26,7 +26,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
  */
 public class DriveTrain {
   // private DifferentialDrive tankDrive; 
-  private DoubleSolenoid solShifter;
+  public DoubleSolenoid solShifter;
   private Ultrasonic sonic1;
   private Ultrasonic sonic2;
   private TalonSRX talonLeft1;
@@ -96,10 +96,18 @@ public class DriveTrain {
     talonRight1.set(ControlMode.PercentOutput, joyRight.getY());
     
     if (robot.solenoidShiftHigh == true) {
-      solShifter.set(Value.kForward);
+      if(solShifter.get() == Value.kForward){
+        solShifter.set(Value.kOff);
+      }else{
+        solShifter.set(Value.kForward);
+      }
     }
     else {
-      solShifter.set(Value.kReverse);
+      if(solShifter.get() == Value.kReverse){
+        solShifter.set(Value.kOff);
+      }else{
+        solShifter.set(Value.kReverse);
+      }
     }                                                                                                                                                                                                                                                                                                                                                                                      
 
 
