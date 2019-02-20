@@ -53,6 +53,8 @@ public class DriverControl {
             }else {
                 robot.nextState = Lift.liftState.HATCH_LEVEL3;
             }
+        }else {
+            robot.nextState = Lift.liftState.MANUAL;
         }   
         if (operatorController.getTriggerAxis(GenericHID.Hand.kRight) > triggerThreshold) {
             //DoubleSolenoid push

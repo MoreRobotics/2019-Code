@@ -22,12 +22,13 @@ import edu.wpi.first.wpilibj.Talon;
 //import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Add your docs here.
  */
 public class Lift {
-    final int botSwitchPin = 1;
+    final int botSwitchPin = 0;
     //final int topSwitchPin = -1;  
     final int motor1ID = 7;
     final int motor2ID = 8;
@@ -41,9 +42,7 @@ public class Lift {
     DigitalInput botSwitch;
     //DigitalInput topSwitch;
     XboxController xbox;
-    final int maxEncoder = 700;
     public FeedbackDevice liftEncoder;
-    StringBuilder _sb;
     Object motorOutput;
     
     
@@ -67,15 +66,22 @@ public class Lift {
         leftMotor = new TalonSRX(motor1ID);
         rightMotor = new VictorSPX(motor2ID);
         leftMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+        leftMotor.configSelectedFeedbackCoefficient(1);
         botSwitch = new DigitalInput(botSwitchPin);
         //topSwitch = new DigitalInput(topSwitchPin);
-        liftEncoderMultiplier = 141;
         rightMotor.follow(leftMotor);
-        leftMotor.setInverted(true);
+        rightMotor.setInverted(true);
         this.xbox = xbox;
         leftMotor.configMotionCruiseVelocity(15, 0);
         leftMotor.configMotionAcceleration(6, 0);
-        StringBuilder _sb = new StringBuilder();
+        SmartDashboard.putNumber("Lift kp", 0);
+        SmartDashboard.putNumber("Lift ki", 0);
+        SmartDashboard.putNumber("Lift kd", 0);
+        SmartDashboard.putNumber("Lift Encoder Coefficient", 463.28);
+        SmartDashboard.putNumber("Lift Cruise Velocity", 15);
+        SmartDashboard.putNumber("Lift Acceleration", 6);
+        SmartDashboard.putNumber("Lift Max Height", 80.5);
+        leftMotor.setSensorPhase(true);
 
          
 
@@ -92,11 +98,19 @@ public class Lift {
  * 
  */
  
+    public void updateSmartDashboard(){
+        leftMotor.config_kP(0, SmartDashboard.getNumber("Lift kp", 3), 50);
+        leftMotor.config_kI(0, SmartDashboard.getNumber("Lift ki", 0), 50);
+        leftMotor.config_kD(0, SmartDashboard.getNumber("Lift kd", 0), 50);
+        liftEncoderMultiplier = 1 / (SmartDashboard.getNumber("Lift Encoder Coefficient", 463.28));
+        leftMotor.configMotionCruiseVelocity((int)(SmartDashboard.getNumber("Lift Cruise Velocity", 4000)), 0);
+        leftMotor.configMotionAcceleration((int)(SmartDashboard.getNumber("Lift Acceleration", 12000)), 0);
+        SmartDashboard.putNumber("Lift Position", leftMotor.getSelectedSensorPosition() * liftEncoderMultiplier);
+        SmartDashboard.putNumber("Lift Velocity", leftMotor.getSelectedSensorVelocity());
+        SmartDashboard.putNumber("Lift Motor", leftMotor.getMotorOutputPercent());
+    }
 
     public void setState(liftState stage) {
-        double moterOutput = leftMotor.getMotorOutputPercent();
-        _sb.append(motorOutput);
-
         switch(stage) {
             case GROUND_LEVEL: 
             //Ground level
@@ -114,62 +128,66 @@ public class Lift {
             default:
             case HATCH_LEVEL1:
             //Hatch level 1 (1ft 7in)
-            target = 48 * liftEncoderMultiplier;
+            target = 18.3 / liftEncoderMultiplier;
             leftMotor.set(ControlMode.MotionMagic, target);
             System.out.println("HatchLevel1 " + target);
 
             break;
             case CARGO_LEVEL1:
             //Cargo level 1 (2ft 3.5 in)
-            target = 70 * liftEncoderMultiplier;
+            target = 26.8 / liftEncoderMultiplier;
             leftMotor.set(ControlMode.MotionMagic, target);
             System.out.println("CargoLevel1 " + target);
 
             break;
             case HATCH_LEVEL2:
             //Hatch level 2 
-            target = 119 * liftEncoderMultiplier; 
+            target = 46.3 / liftEncoderMultiplier; 
             leftMotor.set(ControlMode.MotionMagic, target);
             System.out.println("HatchLevel2 " + target);
 
             break;
             case CARGO_LEVEL2:
             //cargo level 2
-            target = 141 * liftEncoderMultiplier;
+            target = 54.8 / liftEncoderMultiplier;
             leftMotor.set(ControlMode.MotionMagic, target);
             System.out.println("CargoLevel2 " + target);
 
             break;
             case HATCH_LEVEL3:
             //Hatch level 3
-            target = 190 * liftEncoderMultiplier;
+            target = 74.3 / liftEncoderMultiplier;
             leftMotor.set(ControlMode.MotionMagic, target);
             System.out.println("HatchLevel3 " + target);
 
             break;
             case CARGO_LEVEL3:
             //Cargo level 3
-            target = 212 * liftEncoderMultiplier;
+            target = 82.8 / liftEncoderMultiplier;
             leftMotor.set(ControlMode.MotionMagic, target);
-            System.out.println("CatchLevel3 " + target);
+            System.out.println("CargoLevel3 " + target);
 
             break;
             case MANUAL:
-            leftMotor.set(ControlMode.PercentOutput, xbox.getY(Hand.kLeft));
-            /*if(!botSwitch.get() && xbox.getY(Hand.kLeft) < 0){
+            double joystick = -xbox.getY(Hand.kLeft);
+            //leftMotor.set(ControlMode.PercentOutput, xbox.getY(Hand.kLeft));
+            if(!botSwitch.get() && joystick < 0){
                 leftMotor.set(ControlMode.PercentOutput,0);
-                leftMotor.getSensorCollection().setQuadraturePosition(0, 0);
-            }else if(leftMotor.getSensorCollection().getQuadraturePosition() > maxEncoder 
-                && xbox.getY(Hand.kLeft) > 0){
+                leftMotor.setSelectedSensorPosition((int)(6.5 / liftEncoderMultiplier));
+                System.out.print("Herro");
+            }else if(leftMotor.getSelectedSensorPosition() > SmartDashboard.getNumber("Lift Max Height", 74 / liftEncoderMultiplier) / liftEncoderMultiplier
+                && joystick > 0){
                 leftMotor.set(ControlMode.PercentOutput, 0);
             }else {
-                leftMotor.set(ControlMode.PercentOutput, xbox.getY(Hand.kLeft));
-            }*/
-            
-            if(!botSwitch.get()){
-                leftMotor.getSensorCollection().setQuadraturePosition(0, 0);
                 
+                if (joystick < 0){
+                    joystick /= 2;
+                }
+                leftMotor.set(ControlMode.PercentOutput, joystick);
+
             }
+            
+            
                 //need to find the axis for the joystick
         }
     }

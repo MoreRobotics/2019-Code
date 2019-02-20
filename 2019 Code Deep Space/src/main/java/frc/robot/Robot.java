@@ -44,6 +44,7 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   //private final int victor8881Chn = 1;
   //private Victor victor8881 = new Victor(victor8881Chn);
+
   private Lift lift;
   private DriveTrain driveTrain;
   private DriverControl driverControl;
@@ -55,6 +56,8 @@ public class Robot extends TimedRobot {
   public Manipulator.IntakeWheelState intakeWheelState;
   public boolean solenoidShiftHigh;
   public static CameraServer rPICameraServer;
+  public int counter;
+
  
   
 
@@ -170,7 +173,10 @@ public class Robot extends TimedRobot {
     driverControl.update();
     driveTrain.update();
     lift.setState(nextState);
-    
+    counter++;
+    if(counter %5 == 0){
+      lift.updateSmartDashboard();
+    }
     
   }
 
