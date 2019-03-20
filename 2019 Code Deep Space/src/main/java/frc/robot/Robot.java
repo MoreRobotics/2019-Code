@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj.shuffleboard.SendableCameraWrapper;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardContainer;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 
 /**
@@ -56,9 +57,10 @@ public class Robot extends TimedRobot {
   public Lift.liftState nextState;
   public Manipulator.IntakeWheelState intakeWheelState;
   public boolean solenoidShiftHigh;
-  public static CameraServer rPICameraServer;
+  CameraServer rPICameraServer;
   public int counter;
-
+  UsbCamera cam;
+  CameraServer camServer;
  
   
 
@@ -101,8 +103,12 @@ public class Robot extends TimedRobot {
     manipulator.solePneumatics1.set(Value.kReverse);
     lift.init();
     
+    camServer = CameraServer.getInstance();
+    cam = camServer.startAutomaticCapture();
+    cam.setResolution(416, 240);
+    cam.setFPS(15);
     
-    
+
     /*cameraStream.addDefault("Auto1", 1);
     cameraStream.addObject("Auto2", 2);
     Shuffleboard.putData("Autonomous routine", cameraStream);
