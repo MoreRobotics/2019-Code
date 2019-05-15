@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import frc.robot.Manipulator.ClimbState;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
@@ -22,33 +23,39 @@ import edu.wpi.first.wpilibj.GenericHID;
  */
 public class DriverControl {
     private static final double triggerThreshold = 0.5;
+    private double scrollMaxSpeed;
+    private double convertedMaxSpeed;
     private Robot robot;
     private Joystick joyLeft  = new Joystick(0);
     private Joystick joyRight = new Joystick(1);
+    private boolean fourBarLock = false;
     private XboxController operatorController = new XboxController(2);
     DriverControl(Robot robot){
         this.robot = robot;
     }
     public void update(){
-       
+        
+        scrollMaxSpeed = joyRight.getRawAxis(3);
+        convertedMaxSpeed = scrollMaxSpeedConverter(scrollMaxSpeed);
+
         if (operatorController.getY(Hand.kLeft) < -0.1 || operatorController.getY(Hand.kLeft) > 0.1) {
             robot.nextState = Lift.liftState.MANUAL;     
         }else if (operatorController.getAButton()) {
             robot.nextState = Lift.liftState.GROUND_LEVEL;
         }else if (operatorController.getXButton()) {
-            if (operatorController.getBackButton()) {
+            if (!operatorController.getBackButton()) {
                 robot.nextState = Lift.liftState.CARGO_LEVEL1;
             }else {
                 robot.nextState = Lift.liftState.HATCH_LEVEL1;
             }
         }else if (operatorController.getBButton()) {
-            if (operatorController.getBackButton()) {
+            if (!operatorController.getBackButton()) {
                 robot.nextState = Lift.liftState.CARGO_LEVEL2;
             }else {
                 robot.nextState = Lift.liftState.HATCH_LEVEL2;
             }
         }else if (operatorController.getYButton()) {
-            if (operatorController.getBackButton()) {
+            if (!operatorController.getBackButton()) {
                 robot.nextState = Lift.liftState.CARGO_LEVEL3;
             }else {
                 robot.nextState = Lift.liftState.HATCH_LEVEL3;
@@ -57,11 +64,15 @@ public class DriverControl {
             robot.nextState = Lift.liftState.MANUAL;
         }   
         if (operatorController.getTriggerAxis(GenericHID.Hand.kRight) > triggerThreshold) {
-            //DoubleSolenoid push
-            robot.solenoidPush = true;
-        }else if (operatorController.getTriggerAxis(GenericHID.Hand.kLeft) > triggerThreshold){
-            //DoubleSolenoid retract
-            robot.solenoidPush = false;
+            robot.hatchState = Manipulator.HatchState.PUSH_DOWN;
+            robot.grasperState = Manipulator.GrasperState.FOLD_IN;
+        }
+        else if (operatorController.getTriggerAxis(GenericHID.Hand.kRight) <= triggerThreshold){
+            robot.grasperState = Manipulator.GrasperState.FOLD_OUT;
+        }
+        if (operatorController.getTriggerAxis(GenericHID.Hand.kLeft) > triggerThreshold){
+            robot.grasperState = Manipulator.GrasperState.FOLD_OUT;
+            robot.hatchState = Manipulator.HatchState.PULL_UP;
         }
         if (operatorController.getBumper(GenericHID.Hand.kRight)) {
             //Spin intake in
@@ -87,23 +98,43 @@ public class DriverControl {
             //shift solenoid into low shift
             robot.solenoidShiftHigh = false;
         }
+        if (operatorController.getPOV(0) == 180){
+            robot.fourBarState = Manipulator.FourBarState.LET_DOWN;
+        }
+        else if (!fourBarLock){
+            robot.fourBarState = Manipulator.FourBarState.PULL_UP;
+
+        }
+        /*if (operatorController.getStartButtonPressed()) {
+            if (robot.climberState == Manipulator.ClimbState.CLIMB_UP) {
+                robot.climberState = Manipulator.ClimbState.CLIMB_DOWN;
+                fourBarLock = true;
+            }
+            else if (robot.climberState == Manipulator.ClimbState.CLIMB_DOWN) {
+                robot.climberState = Manipulator.ClimbState.CLIMB_UP;
+            }
+        }*/
     }
     
     public Joystick getJoyLeft() {
-        return joyLeft;
-        
-
-        
+        return joyLeft;  
     }
-
     
-
     public Joystick getJoyRight() {
         return joyRight;
     }
     
     public XboxController getXboxController() {
         return operatorController;
+    }
+
+    public double getConvertedMaxSpeed() {
+        return convertedMaxSpeed;
+    }
+
+    private double scrollMaxSpeedConverter(double scrollMaxSpeed) {
+        double convertedMaxSpeed = (scrollMaxSpeed + 1)/2;
+        return convertedMaxSpeed;
     }
 }  
 /**
@@ -112,8 +143,8 @@ public class DriverControl {
  * 
  * Right Bumper- Intake (In)
  * Left Bumper- Intake (Out)
- * Right Trigger- Solenoid out?
- * Left Trigger- Solenoid in?
+ * Right Trigger- 
+ * Left Trigger- 
  * DPad- unassigned
  * JoyStick1(Left Side)- Manual Lift Movement (THIS ONE!)
  * JoyStick2(Right Side)- Unassinged 

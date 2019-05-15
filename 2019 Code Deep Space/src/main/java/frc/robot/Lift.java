@@ -90,12 +90,12 @@ public class Lift {
     }
 
     public void init() {
-        leftMotor.config_kP(0, SmartDashboard.getNumber("Lift kp", 3), 0);
+        leftMotor.config_kP(0, SmartDashboard.getNumber("Lift kp", 2.8), 0);
         leftMotor.config_kI(0, SmartDashboard.getNumber("Lift ki", 0), 0);
         leftMotor.config_kD(0, SmartDashboard.getNumber("Lift kd", 0), 0);
         liftEncoderMultiplier = 1 / (SmartDashboard.getNumber("Lift Encoder Coefficient", 463.28));
         leftMotor.configMotionCruiseVelocity((int)(SmartDashboard.getNumber("Lift Cruise Velocity", 4000)), 0);
-        leftMotor.configMotionAcceleration((int)(SmartDashboard.getNumber("Lift Acceleration", 12000)), 0);
+        leftMotor.configMotionAcceleration(4000, 0);
         
     }
 
@@ -116,7 +116,6 @@ public class Lift {
     }
 
     public void setState(liftState stage) {
-        leftMotor.config_kP(0, SmartDashboard.getNumber("Lift kp", 3), 3);
 
         switch(stage) {
             case GROUND_LEVEL: 
@@ -124,7 +123,7 @@ public class Lift {
             //check encoder value, run motor up or down based on encoder value
             // all targets are measurements in cm. 
             // each level adds 71 (2ft 4 in) cm to the previous 
-            target = 0;
+            target = 10 / liftEncoderMultiplier;
             leftMotor.set(ControlMode.MotionMagic, target);
             System.out.println("GroundLevel " + target);
             //if (liftEncoder.get() < )
@@ -170,7 +169,7 @@ public class Lift {
             break;
             case CARGO_LEVEL3:
             //Cargo level 3
-            target = 82.8 / liftEncoderMultiplier;
+            target = 78.43/ liftEncoderMultiplier;
             leftMotor.set(ControlMode.MotionMagic, target);
             System.out.println("CargoLevel3 " + target);
 
@@ -178,11 +177,13 @@ public class Lift {
             case MANUAL:
             double joystick = -xbox.getY(Hand.kLeft);
             //leftMotor.set(ControlMode.PercentOutput, xbox.getY(Hand.kLeft));
-            if(!botSwitch.get() && joystick < 0){
+            if(!botSwitch.get()){
                 leftMotor.set(ControlMode.PercentOutput,0);
-                leftMotor.setSelectedSensorPosition((int)(6.5 / liftEncoderMultiplier));
-                System.out.print("Herro");
-            }else if(leftMotor.getSelectedSensorPosition() > SmartDashboard.getNumber("Lift Max Height", 74 / liftEncoderMultiplier) / liftEncoderMultiplier
+                leftMotor.setSelectedSensorPosition((int)(9 / liftEncoderMultiplier));
+                if (joystick < 0) {
+                    leftMotor.set(ControlMode.PercentOutput,0);
+                }
+            }else if(leftMotor.getSelectedSensorPosition() > SmartDashboard.getNumber("Lift Max Height", 74  / liftEncoderMultiplier) / liftEncoderMultiplier
                 && joystick > 0){
                 leftMotor.set(ControlMode.PercentOutput, 0);
             }else {

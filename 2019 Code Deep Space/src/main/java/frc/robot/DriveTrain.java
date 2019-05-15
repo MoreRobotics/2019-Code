@@ -39,6 +39,9 @@ public class DriveTrain {
   // private SpeedControllerGroup rightSide;
   private Joystick joyLeft;
   private Joystick joyRight;
+  private double joyLeftPassed;
+  private double joyRightPassed;
+  //private double convertedMaxSpeed = DriverControl.getConvertedMaxSpeed();
   private Robot robot;
   private static final int solShifterPin1 = 0;
   private static final int solShifterPin2 = 1;
@@ -91,9 +94,19 @@ public class DriveTrain {
 
   public void update() {
     // tankDrive.tankDrive(-joyLeft.getY(), joyRight.getY());
+    /*if(convertedMaxSpeed < joyLeft.getRawAxis(1)) {
+      joyLeftPassed = convertedMaxSpeed; 
+    }
 
-    talonLeft1.set(ControlMode.PercentOutput, (Math.abs(-joyLeft.getY()) < 0.1 ? 0 : -joyLeft.getY()));
-    talonRight1.set(ControlMode.PercentOutput, (Math.abs(joyRight.getY()) < 0.1 ? 0 : joyRight.getY()));
+    if(convertedMaxSpeed < joyRight.getRawAxis(1)) {
+      joyRightPassed = convertedMaxSpeed; 
+    }
+    */
+    talonLeft1.set(ControlMode.PercentOutput, (Math.abs(joyRight.getX()) < 0.1 ? 0 : joyRight.getX())-
+    (Math.abs(joyLeft.getY()) < 0.1 ? 0 : joyLeft.getY()));
+
+    talonRight1.set(ControlMode.PercentOutput, (Math.abs(joyRight.getX()) < 0.1 ? 0 : joyRight.getX())+
+    (Math.abs(joyLeft.getY()) < 0.1 ? 0 : joyLeft.getY()));
     
     if (robot.solenoidShiftHigh == true) {
       /*if(solShifter.get() == Value.kForward){

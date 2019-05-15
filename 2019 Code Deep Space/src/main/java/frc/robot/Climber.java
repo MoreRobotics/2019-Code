@@ -8,16 +8,18 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.XboxController;
 
 
 
-public class Climber{
-    XboxController Xbox;
+/*public class Climber{
+    public DoubleSolenoid climb;
+    private Robot robot;
 
 
-
-    Climber(){
+    Climber(Robot robot){
+        this.robot = robot;
 
 
 
@@ -33,3 +35,4 @@ public class Climber{
 
 
 }
+*/
