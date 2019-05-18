@@ -36,25 +36,17 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
   and made an if statement regarding getting the solenoids when a button of xbox is used. 
   */
 
-  public class Manipulator { 
-    private final int hatchStateID1 = 7;
-    private final int hatchStateID2 = 2;
-    private final int grasperID1 = 3;
-    private final int grasperID2 = 4;
-    private final int fourBarID1 = 5;
-    private final int fourBarID2 = 6;
+  public class Manipulator {
+    private final int IRsensorID = 5; 
+    private final int solePneumatic1ID = 6;
+    private final int solePneumatic2ID = 7;
     private final int victor888ID = 0;
-    private final int climbID1 = 0;
-    private final int climbID2 = 1;
     private Victor victor888; 
-    public DoubleSolenoid hatchState;
-    public DoubleSolenoid grasper;
-    public DoubleSolenoid fourBar;
-    public DoubleSolenoid climber;
+    private DigitalInput cargoDetect;
+    public DoubleSolenoid solePneumatics1;
     private Robot robot;
-    private static final double speedIn = 1;
+    private static final double speedIn = .5;
     private static final double speedOut = -1;
-    private static final double speedStop = .25;
     private int counter = 0;
 
     public enum IntakeWheelState{
@@ -63,32 +55,10 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
       SPIN_STOP
     }
 
-    public enum HatchState {
-      PULL_UP,
-      PUSH_DOWN,
-    }
-
-    public enum GrasperState {
-      FOLD_IN,
-      FOLD_OUT,
-    }
-
-    public enum FourBarState {
-      PULL_UP,
-      LET_DOWN,
-    }
-    public enum ClimbState {
-      CLIMB_UP,
-      CLIMB_DOWN,
-    }
-
     Manipulator(Robot robot) { 
       this.robot = robot;
-      grasper = new DoubleSolenoid(0, hatchStateID1, hatchStateID2);
-      fourBar = new DoubleSolenoid(0, grasperID1, grasperID2);
-      hatchState = new DoubleSolenoid(0, fourBarID1, fourBarID2);
-      climber = new DoubleSolenoid(10, climbID1, climbID2);
-
+      solePneumatics1 = new DoubleSolenoid(solePneumatic1ID, solePneumatic2ID);
+      cargoDetect = new DigitalInput(IRsensorID);
       victor888 = new Victor(victor888ID);
       
       
@@ -103,50 +73,18 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
         victor888.set(speedOut);
       }
       else if (robot.intakeWheelState == IntakeWheelState.SPIN_STOP) {
-        if ( robot.hatchState == HatchState.PULL_UP) {
-          victor888.set(speedStop);
-        }
-        else {
-          victor888.stopMotor();
-        }
+        victor888.stopMotor();
       }
-      if (robot.hatchState == HatchState.PULL_UP) {
-        if (robot.grasperState == GrasperState.FOLD_OUT){
-            hatchState.set(Value.kReverse);
-        }
-        else{
-          robot.hatchState = HatchState.PUSH_DOWN;
-          hatchState.set(Value.kForward);
+      if (robot.solenoidPush == true) {
+        solePneumatics1.set(Value.kForward);
+        if (counter++ > 50) {
+          robot.solenoidPush = false;
+          counter = 0;
         }
       }
-      else if(robot.hatchState == HatchState.PUSH_DOWN){
-        hatchState.set(Value.kForward);
+      else {
+        solePneumatics1.set(Value.kReverse);
       }
-      if (robot.grasperState == GrasperState.FOLD_IN){
-        if (robot.hatchState == HatchState.PUSH_DOWN){
-          grasper.set(Value.kReverse);
-        }
-        else {
-          robot.grasperState = GrasperState.FOLD_OUT;
-          grasper.set(Value.kForward);
-        }
-      }
-      else if (robot.grasperState == GrasperState.FOLD_OUT){
-        grasper.set(Value.kForward);
-      }
-      if (robot.fourBarState == FourBarState.PULL_UP){
-        fourBar.set(Value.kReverse);
-      }
-      else if (robot.fourBarState == FourBarState.LET_DOWN){
-        fourBar.set(Value.kForward);
-      }
-      if (robot.climberState == ClimbState.CLIMB_UP) {
-        climber.set(Value.kReverse);
-      }
-      else if (robot.climberState == ClimbState.CLIMB_DOWN) {
-        climber.set(Value.kForward);
-      }
-      
 
     } 
 

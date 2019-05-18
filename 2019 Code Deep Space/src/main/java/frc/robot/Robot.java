@@ -40,8 +40,8 @@ import edu.wpi.first.cameraserver.CameraServer;
  * project.
  */
 public class Robot extends TimedRobot {
-  private static final String kDefaultAuto = "Start Hatch";
-  private static final String kCustomAuto = "Start Cargo";
+  private static final String kDefaultAuto = "Default";
+  private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   //private final int victor8881Chn = 1;
@@ -52,20 +52,17 @@ public class Robot extends TimedRobot {
   private DriverControl driverControl;
   private Manipulator manipulator;
   private XboxController xbox;
+  public boolean solenoidPush;
   public Lift.liftState currentState;
   public Lift.liftState nextState;
   public Manipulator.IntakeWheelState intakeWheelState;
-  public Manipulator.HatchState hatchState;
-  public Manipulator.GrasperState grasperState;
-  public Manipulator.FourBarState fourBarState;
-  public Manipulator.ClimbState climberState;
   public boolean solenoidShiftHigh;
   CameraServer rPICameraServer;
   public int counter;
   UsbCamera cam;
-  CameraServer camServer; 
-  CameraServer rpiCam;
+  CameraServer camServer;
  
+  
 
 
   Robot(){
@@ -75,9 +72,13 @@ public class Robot extends TimedRobot {
     manipulator = new Manipulator(this);
     lift = new Lift(driverControl.getXboxController());
     
+
+
     
     
   }
+  
+
   
   /**
    * This function is run when the robot is first started up and should be
@@ -85,11 +86,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    m_chooser.setDefaultOption("Start Hatch", kDefaultAuto);
-    m_chooser.addOption("Start Cargo", kCustomAuto);
+    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
+    m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
     System.out.println("1714");
-
     //SpeedControllerGroup motorsLeft = new SpeedControllerGroup(mytalon0, mytalon1);
     //SpeedControllerGroup motorsRight = new SpeedControllerGroup(mytalon2, mytalon3);
     //tankDrive = new DifferentialDrive(motorsLeft, motorsRight);
@@ -97,28 +97,17 @@ public class Robot extends TimedRobot {
     //motorsRight.setInverted(true);
     //sonic = new Ultrasonic(0,1);
     //sonic.setAutomaticMode(true);
-    grasperState = Manipulator.GrasperState.FOLD_OUT;
-    hatchState = Manipulator.HatchState.PULL_UP;
-    fourBarState = Manipulator.FourBarState.PULL_UP;
-    climberState = Manipulator.ClimbState.CLIMB_UP;
+    solenoidPush = false;
     solenoidShiftHigh = false;
     driveTrain.solShifter.set(Value.kReverse);
-    manipulator.hatchState.set(Value.kReverse);
-    manipulator.grasper.set(Value.kForward);
-    manipulator.fourBar.set(Value.kReverse);
-    manipulator.climber.set(Value.kReverse);
-
-
+    manipulator.solePneumatics1.set(Value.kReverse);
     lift.init();
     
     camServer = CameraServer.getInstance();
     cam = camServer.startAutomaticCapture();
-    cam.setResolution(144, 240);
+    cam.setResolution(416, 240);
     cam.setFPS(15);
     
-    
-    
-
 
     /*cameraStream.addDefault("Auto1", 1);
     cameraStream.addObject("Auto2", 2);
@@ -158,14 +147,9 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_autoSelected = m_chooser.getSelected();
+    // autoSelected = SmartDashboard.getString("Auto Selector",
+    // defaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
-    if ( m_autoSelected == kDefaultAuto) {
-      hatchState = Manipulator.HatchState.PUSH_DOWN;
-    }
-    else {
-      hatchState = Manipulator.HatchState.PULL_UP;
-    }
-    this.teleopInit();
   
   }
 
@@ -174,19 +158,18 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-    /*driverControl.update();
+    driverControl.update();
     driveTrain.update();
     lift.setState(nextState);
     counter++;
     if(counter %5 == 0){
       lift.updateSmartDashboard();
-    } */
-    this.teleopPeriodic();
+    } 
   }
 
   @Override
   public void teleopInit() {
-    //System.out.println();
+    System.out.println();
   }
 
   /**
@@ -216,29 +199,8 @@ public class Robot extends TimedRobot {
    */
 
   @Override
-  public void testPeriodic() { 
-
-
-    if (driverControl.getXboxController().getAButton()){
-      manipulator.fourBar.set(Value.kForward);
-    }
-    if (driverControl.getXboxController().getBButton()){
-      manipulator.fourBar.set(Value.kReverse);
-    }
-    if (driverControl.getXboxController().getXButton()){
-      manipulator.grasper.set(Value.kForward);
-    }
-    if (driverControl.getXboxController().getYButton()){
-      manipulator.grasper.set(Value.kReverse);
-    }
-    if (driverControl.getXboxController().getBumper(GenericHID.Hand.kLeft)){
-      manipulator.hatchState.set(Value.kForward);
-    }
-    if (driverControl.getXboxController().getBumper(GenericHID.Hand.kRight)){
-      manipulator.hatchState.set(Value.kReverse);
-    }
-
-
+  public void testPeriodic() {  
+    driveTrain.motorRun();
       
   }
 
