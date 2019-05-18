@@ -28,6 +28,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.shuffleboard.SendableCameraWrapper;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardContainer;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
@@ -65,6 +66,8 @@ public class Robot extends TimedRobot {
   UsbCamera cam;
   CameraServer camServer; 
   CameraServer rpiCam;
+  public boolean compressorEnable;
+  Compressor compressor;
  
 
 
@@ -74,6 +77,7 @@ public class Robot extends TimedRobot {
     driveTrain = new DriveTrain(driverControl.getJoyLeft(), driverControl.getJoyRight(),this);
     manipulator = new Manipulator(this);
     lift = new Lift(driverControl.getXboxController());
+    
     
     
     
@@ -108,6 +112,7 @@ public class Robot extends TimedRobot {
     manipulator.fourBar.set(Value.kReverse);
     manipulator.climber.set(Value.kReverse);
 
+    compressor.setClosedLoopControl(false);
 
     lift.init();
     
@@ -201,6 +206,14 @@ public class Robot extends TimedRobot {
     counter++;
     if(counter %50 == 0){
       lift.updateSmartDashboard();
+    }
+    if(compressorEnable)
+    {
+      compressor.setClosedLoopControl(true);
+    }
+    else
+    {
+      compressor.setClosedLoopControl(false);
     }
     
   }

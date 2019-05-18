@@ -105,6 +105,14 @@ public class DriverControl {
             robot.fourBarState = Manipulator.FourBarState.PULL_UP;
 
         }
+        if (joystickRight.getRawButton(10))
+        {
+            robot.compressorEnable = true;
+        }
+        else
+        {
+            robot.compressorEnable = false;
+        }
         /*if (operatorController.getStartButtonPressed()) {
             if (robot.climberState == Manipulator.ClimbState.CLIMB_UP) {
                 robot.climberState = Manipulator.ClimbState.CLIMB_DOWN;
