@@ -29,7 +29,6 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardContainer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 
 /**
@@ -60,13 +59,17 @@ public class Robot extends TimedRobot {
   public Manipulator.FourBarState fourBarState;
   public Manipulator.ClimbState climberState;
   public boolean solenoidShiftHigh;
-  CameraServer rPICameraServer;
+  public static CameraServer rPICameraServer;
   public int counter;
+<<<<<<< HEAD
   UsbCamera cam;
   CameraServer camServer; 
   CameraServer rpiCam;
   public boolean compressorEnable;
   Compressor compressor;
+=======
+
+>>>>>>> parent of 119f163... USBCamera
  
 
 
@@ -115,6 +118,7 @@ public class Robot extends TimedRobot {
 
     lift.init();
     
+<<<<<<< HEAD
     camServer = CameraServer.getInstance();
     cam = camServer.startAutomaticCapture();
     cam.setResolution(144, 240);
@@ -124,6 +128,10 @@ public class Robot extends TimedRobot {
     
 
 
+=======
+    
+    
+>>>>>>> parent of 119f163... USBCamera
     /*cameraStream.addDefault("Auto1", 1);
     cameraStream.addObject("Auto2", 2);
     Shuffleboard.putData("Autonomous routine", cameraStream);
