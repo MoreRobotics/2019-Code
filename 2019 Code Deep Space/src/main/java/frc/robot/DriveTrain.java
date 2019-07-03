@@ -16,7 +16,9 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Ultrasonic;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 
@@ -37,8 +39,9 @@ public class DriveTrain {
   private TalonSRX talonRight3;
   // private SpeedControllerGroup leftSide;
   // private SpeedControllerGroup rightSide;
-  private Joystick joyLeft;
-  private Joystick joyRight;
+  // private Joystick joyLeft;
+  // private Joystick joyRight;
+  private XboxController driverController;
   private double joyLeftPassed;
   private double joyRightPassed;
   //private double convertedMaxSpeed = DriverControl.getConvertedMaxSpeed();
@@ -57,7 +60,9 @@ public class DriveTrain {
   private static final int talonRight3ID = 6; 
 
 
-  DriveTrain(Joystick joyLeft, Joystick joyRight, Robot robot) {
+  // DriveTrain(Joystick joyLeft, Joystick joyRight, Robot robot) {
+    DriveTrain(XboxController driverController, Robot robot) {
+
     // talonLeft1 = new WPI_TalonSRX(talonLeft1ID);
     // talonLeft2 = new WPI_TalonSRX(talonLeft2ID);
     // talonLeft3 = new WPI_TalonSRX(talonLeft3ID);
@@ -77,8 +82,9 @@ public class DriveTrain {
     solShifter = new DoubleSolenoid (solShifterPin1, solShifterPin2);
     sonic1 = new Ultrasonic(sonic1PinOut, sonic1PinIn);
     sonic2 = new Ultrasonic(sonic2PinOut, sonic2PinIn);
-    this.joyLeft = joyLeft;
-    this.joyRight = joyRight;
+    // this.joyLeft = joyLeft;
+    // this.joyRight = joyRight;
+    this.driverController = driverController;
     this.robot = robot;
     talonLeft1.setInverted(true);
     talonRight3.setInverted(true);
@@ -102,11 +108,17 @@ public class DriveTrain {
       joyRightPassed = convertedMaxSpeed; 
     }
     */
-    talonLeft1.set(ControlMode.PercentOutput, (Math.abs(joyRight.getX()) < 0.1 ? 0 : joyRight.getX())-
-    (Math.abs(joyLeft.getY()) < 0.1 ? 0 : joyLeft.getY()));
+    // talonLeft1.set(ControlMode.PercentOutput, (Math.abs(joyRight.getX()) < 0.1 ? 0 : joyRight.getX())-
+    // (Math.abs(joyLeft.getY()) < 0.1 ? 0 : joyLeft.getY()));
 
-    talonRight1.set(ControlMode.PercentOutput, (Math.abs(joyRight.getX()) < 0.1 ? 0 : joyRight.getX())+
-    (Math.abs(joyLeft.getY()) < 0.1 ? 0 : joyLeft.getY()));
+    // talonRight1.set(ControlMode.PercentOutput, (Math.abs(joyRight.getX()) < 0.1 ? 0 : joyRight.getX())+
+    // (Math.abs(joyLeft.getY()) < 0.1 ? 0 : joyLeft.getY()));
+
+    talonLeft1.set(ControlMode.PercentOutput, (Math.abs(driverController.getX(Hand.kRight)) < 0.1 ? 0 : driverController.getX(Hand.kRight))-
+    (Math.abs(driverController.getY(Hand.kLeft)) < 0.1 ? 0 : driverController.getY(Hand.kLeft)));
+
+    talonRight1.set(ControlMode.PercentOutput, (Math.abs(driverController.getX(Hand.kRight)) < 0.1 ? 0 : driverController.getX(Hand.kRight))+
+    (Math.abs(driverController.getY(Hand.kLeft)) < 0.1 ? 0 : driverController.getY(Hand.kLeft)));
     
     if (robot.solenoidShiftHigh == true) {
       /*if(solShifter.get() == Value.kForward){

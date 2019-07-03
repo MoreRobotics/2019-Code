@@ -71,9 +71,9 @@ public class Robot extends TimedRobot {
   Robot(){
    // lift = new Lift();
     driverControl = new DriverControl(this);
-    driveTrain = new DriveTrain(driverControl.getJoyLeft(), driverControl.getJoyRight(),this);
+    driveTrain = new DriveTrain(driverControl.getDriverController(),this);
     manipulator = new Manipulator(this);
-    lift = new Lift(driverControl.getXboxController());
+    lift = new Lift(driverControl.getOperatorController());
     
     
     
@@ -219,22 +219,22 @@ public class Robot extends TimedRobot {
   public void testPeriodic() { 
 
 
-    if (driverControl.getXboxController().getAButton()){
+    if (driverControl.getOperatorController().getAButton()){
       manipulator.fourBar.set(Value.kForward);
     }
-    if (driverControl.getXboxController().getBButton()){
+    if (driverControl.getOperatorController().getBButton()){
       manipulator.fourBar.set(Value.kReverse);
     }
-    if (driverControl.getXboxController().getXButton()){
+    if (driverControl.getOperatorController().getXButton()){
       manipulator.grasper.set(Value.kForward);
     }
-    if (driverControl.getXboxController().getYButton()){
+    if (driverControl.getOperatorController().getYButton()){
       manipulator.grasper.set(Value.kReverse);
     }
-    if (driverControl.getXboxController().getBumper(GenericHID.Hand.kLeft)){
+    if (driverControl.getOperatorController().getBumper(GenericHID.Hand.kLeft)){
       manipulator.hatchState.set(Value.kForward);
     }
-    if (driverControl.getXboxController().getBumper(GenericHID.Hand.kRight)){
+    if (driverControl.getOperatorController().getBumper(GenericHID.Hand.kRight)){
       manipulator.hatchState.set(Value.kReverse);
     }
 

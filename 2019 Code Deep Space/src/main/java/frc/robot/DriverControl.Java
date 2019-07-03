@@ -26,17 +26,19 @@ public class DriverControl {
     private double scrollMaxSpeed;
     private double convertedMaxSpeed;
     private Robot robot;
-    private Joystick joyLeft  = new Joystick(0);
-    private Joystick joyRight = new Joystick(1);
+    // private Joystick joyLeft  = new Joystick(0);
+    // private Joystick joyRight = new Joystick(1);
     private boolean fourBarLock = false;
     private XboxController operatorController = new XboxController(2);
+    private XboxController driverController = new XboxController(0);
     DriverControl(Robot robot){
         this.robot = robot;
     }
     public void update(){
         
-        scrollMaxSpeed = joyRight.getRawAxis(3);
-        convertedMaxSpeed = scrollMaxSpeedConverter(scrollMaxSpeed);
+        //scrollMaxSpeed = joyRight.getRawAxis(3);
+        
+        //convertedMaxSpeed = scrollMaxSpeedConverter(scrollMaxSpeed);
 
         if (operatorController.getY(Hand.kLeft) < -0.1 || operatorController.getY(Hand.kLeft) > 0.1) {
             robot.nextState = Lift.liftState.MANUAL;     
@@ -85,16 +87,19 @@ public class DriverControl {
             robot.intakeWheelState = Manipulator.IntakeWheelState.SPIN_STOP;
         }
 
-        if (joyRight.getRawButton(3)) {
+        // if (joyRight.getRawButton(3)) {
+            if (driverController.getStartButton()) {
             //enable vision tracking
         }
 
-        if (joyLeft.getRawButton(3)) {
+        // if (joyLeft.getRawButton(3)) {
+            if (driverController.getPOV(0) == 0) {
             //shift solenoid into high shift
             robot.solenoidShiftHigh = true;
         }
 
-        if (joyLeft.getRawButton(2)) {
+        // if (joyLeft.getRawButton(2)) {
+            if (driverController.getPOV(0) == 180) {
             //shift solenoid into low shift
             robot.solenoidShiftHigh = false;
         }
@@ -116,26 +121,30 @@ public class DriverControl {
         }*/
     }
     
-    public Joystick getJoyLeft() {
-        return joyLeft;  
-    }
+    // public Joystick getJoyLeft() {
+    //     return joyLeft;  
+    // }
     
-    public Joystick getJoyRight() {
-        return joyRight;
-    }
+    // public Joystick getJoyRight() {
+    //     return joyRight;
+    // }
     
-    public XboxController getXboxController() {
+    public XboxController getOperatorController() {
         return operatorController;
     }
-
-    public double getConvertedMaxSpeed() {
-        return convertedMaxSpeed;
+    
+    public XboxController getDriverController() {
+        return driverController;
     }
 
-    private double scrollMaxSpeedConverter(double scrollMaxSpeed) {
-        double convertedMaxSpeed = (scrollMaxSpeed + 1)/2;
-        return convertedMaxSpeed;
-    }
+    // public double getConvertedMaxSpeed() {
+    //     return convertedMaxSpeed;
+    // }
+
+    // private double scrollMaxSpeedConverter(double scrollMaxSpeed) {
+    //     double convertedMaxSpeed = (scrollMaxSpeed + 1)/2;
+    //     return convertedMaxSpeed;
+    // }
 }  
 /**
  * Plannned xbox controller button mapping
