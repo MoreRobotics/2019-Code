@@ -106,7 +106,7 @@ public class DriverControl {
         if (operatorController.getPOV(0) == 180){
             robot.fourBarState = Manipulator.FourBarState.LET_DOWN;
         }
-        else if (!fourBarLock){
+        if (operatorController.getPOV(0) == 0){
             robot.fourBarState = Manipulator.FourBarState.PULL_UP;
 
         }

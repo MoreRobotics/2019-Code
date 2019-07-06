@@ -123,7 +123,7 @@ public class Lift {
             //check encoder value, run motor up or down based on encoder value
             // all targets are measurements in cm. 
             // each level adds 71 (2ft 4 in) cm to the previous 
-            target = 10 / liftEncoderMultiplier;
+            target = 10.5 / liftEncoderMultiplier;
             leftMotor.set(ControlMode.MotionMagic, target);
             System.out.println("GroundLevel " + target);
             //if (liftEncoder.get() < )
