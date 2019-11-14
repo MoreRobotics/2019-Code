@@ -39,32 +39,38 @@ public class DriverControl {
         //scrollMaxSpeed = joyRight.getRawAxis(3);
         
         //convertedMaxSpeed = scrollMaxSpeedConverter(scrollMaxSpeed);
-
+        
         if (operatorController.getY(Hand.kLeft) < -0.1 || operatorController.getY(Hand.kLeft) > 0.1) {
             robot.nextState = Lift.liftState.MANUAL;     
         }else if (operatorController.getAButton()) {
             robot.nextState = Lift.liftState.GROUND_LEVEL;
         }else if (operatorController.getXButton()) {
-            if (!operatorController.getBackButton()) {
+            if (!operatorController.getBackButton() && robot.grasperState == Manipulator.GrasperState.FOLD_IN) {
                 robot.nextState = Lift.liftState.CARGO_LEVEL1;
             }else {
                 robot.nextState = Lift.liftState.HATCH_LEVEL1;
             }
         }else if (operatorController.getBButton()) {
-            if (!operatorController.getBackButton()) {
+            if (!operatorController.getBackButton() && robot.grasperState == Manipulator.GrasperState.FOLD_IN) {
                 robot.nextState = Lift.liftState.CARGO_LEVEL2;
             }else {
                 robot.nextState = Lift.liftState.HATCH_LEVEL2;
             }
         }else if (operatorController.getYButton()) {
-            if (!operatorController.getBackButton()) {
+            if (!operatorController.getBackButton() && robot.grasperState == Manipulator.GrasperState.FOLD_IN) {
                 robot.nextState = Lift.liftState.CARGO_LEVEL3;
             }else {
                 robot.nextState = Lift.liftState.HATCH_LEVEL3;
             }
+        }else if (operatorController.getStartButton()) {
+            if(robot.fourBarState != Manipulator.FourBarState.PULL_UP) {
+                robot.nextState = Lift.liftState.CARGO_LOADING_STATION; 
+            }else {
+                robot.nextState = Lift.liftState.CARGO_LOADING_STATION_FOURBAR_IN;
+            }
         }else {
             robot.nextState = Lift.liftState.MANUAL;
-        }   
+        }  
         if (operatorController.getTriggerAxis(GenericHID.Hand.kRight) > triggerThreshold) {
             robot.hatchState = Manipulator.HatchState.PUSH_DOWN;
             robot.grasperState = Manipulator.GrasperState.FOLD_IN;
@@ -110,6 +116,7 @@ public class DriverControl {
             robot.fourBarState = Manipulator.FourBarState.PULL_UP;
 
         }
+    
         /*if (operatorController.getStartButtonPressed()) {
             if (robot.climberState == Manipulator.ClimbState.CLIMB_UP) {
                 robot.climberState = Manipulator.ClimbState.CLIMB_DOWN;

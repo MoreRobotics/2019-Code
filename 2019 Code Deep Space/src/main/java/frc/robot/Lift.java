@@ -48,6 +48,8 @@ public class Lift {
     
     public enum liftState{
         GROUND_LEVEL, 
+        CARGO_LOADING_STATION,
+        CARGO_LOADING_STATION_FOURBAR_IN,
         CARGO_LEVEL1, 
         CARGO_LEVEL2,
         CARGO_LEVEL3,
@@ -80,7 +82,7 @@ public class Lift {
         SmartDashboard.putNumber("Lift Encoder Coefficient", 463.28);
         SmartDashboard.putNumber("Lift Cruise Velocity", 4000);
         SmartDashboard.putNumber("Lift Acceleration", 12000);
-        SmartDashboard.putNumber("Lift Max Height", 80.5);
+        SmartDashboard.putNumber("Lift Max Height", 70.5);
         leftMotor.setSensorPhase(true);
 
 
@@ -130,7 +132,34 @@ public class Lift {
             
         
             //This will cause the motors to run until the target                       
-            break;            
+            break;                       
+            
+
+            case CARGO_LOADING_STATION: 
+            //Ground level
+            //check encoder value, run motor up or down based on encoder value
+            // all targets are measurements in cm. 
+            // each level adds 71 (2ft 4 in) cm to the previous 
+            target = 43.5 / liftEncoderMultiplier;
+            leftMotor.set(ControlMode.MotionMagic, target);
+            //if (liftEncoder.get() < )
+            
+            case CARGO_LOADING_STATION_FOURBAR_IN: 
+            //Ground level
+            //check encoder value, run motor up or down based on encoder value
+            // all targets are measurements in cm. 
+            // each level adds 71 (2ft 4 in) cm to the previous 
+            target = 34.5 / liftEncoderMultiplier;
+            leftMotor.set(ControlMode.MotionMagic, target);
+            //if (liftEncoder.get() < )
+            
+        
+            //This will cause the motors to run until the target                       
+            break; 
+            //This will cause the motors to run until the target                       
+                        
+
+
             default:
             case HATCH_LEVEL1:
             //Hatch level 1 (1ft 7in)
