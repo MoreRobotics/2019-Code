@@ -14,7 +14,7 @@ public class ManipulatorStates extends Command{
     
       @Override
       protected void initialize() {
-        Robot.manipulator.
+        
       }
 
       @Override 
