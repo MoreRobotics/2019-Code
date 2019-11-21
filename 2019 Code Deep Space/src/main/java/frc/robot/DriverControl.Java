@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Manipulator.ClimbState;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -21,7 +22,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 /**
  * Add your docs here.
  */
-public class DriverControl {
+public class DriverControl extends Subsystem{
     private static final double triggerThreshold = 0.5;
     private double scrollMaxSpeed;
     private double convertedMaxSpeed;
@@ -142,6 +143,11 @@ public class DriverControl {
     
     public XboxController getDriverController() {
         return driverController;
+    }
+
+    @Override
+    protected void initDefaultCommand() {
+
     }
 
     // public double getConvertedMaxSpeed() {

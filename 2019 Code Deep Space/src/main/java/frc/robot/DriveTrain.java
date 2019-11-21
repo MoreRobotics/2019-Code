@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 
@@ -26,7 +27,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 /**
  * Add your docs here.
  */
-public class DriveTrain {
+public class DriveTrain extends Subsystem {
   // private DifferentialDrive tankDrive; 
   public DoubleSolenoid solShifter;
   private Ultrasonic sonic1;
@@ -141,6 +142,11 @@ public class DriveTrain {
     // tankDrive.tankDrive(0.3, 0.3);
 
     }
+
+  @Override
+  protected void initDefaultCommand() {
+
+  }
           
 
 

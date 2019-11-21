@@ -47,10 +47,10 @@ public class Robot extends TimedRobot {
   //private final int victor8881Chn = 1;
   //private Victor victor8881 = new Victor(victor8881Chn);
 
-  private Lift lift;
-  private DriveTrain driveTrain;
-  private DriverControl driverControl;
-  private Manipulator manipulator;
+  public static Lift lift;
+  public static DriveTrain driveTrain;
+  public static DriverControl driverControl;
+  public static Manipulator manipulator;
   private XboxController xbox;
   public Lift.liftState currentState;
   public Lift.liftState nextState;

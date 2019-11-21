@@ -22,12 +22,13 @@ import edu.wpi.first.wpilibj.Talon;
 //import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Add your docs here.
  */
-public class Lift {
+public class Lift extends Subsystem{
     final int botSwitchPin = 0;
     //final int topSwitchPin = -1;  
     final int motor1ID = 7;
@@ -227,6 +228,11 @@ public class Lift {
             
                 //need to find the axis for the joystick
         }
+    }
+
+    @Override
+    protected void initDefaultCommand() {
+
     }
 
 
