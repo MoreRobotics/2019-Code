@@ -25,6 +25,7 @@
  import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.command.Subsystem;
  
 
   /**
@@ -36,7 +37,7 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
   and made an if statement regarding getting the solenoids when a button of xbox is used. 
   */
 
-  public class Manipulator { 
+  public class Manipulator extends Subsystem { 
     private final int hatchStateID1 = 7;
     private final int hatchStateID2 = 2;
     private final int grasperID1 = 3;
@@ -148,7 +149,12 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
       }
       
 
-    } 
+    }
+
+  @Override
+  protected void initDefaultCommand() {
+
+  }
 
  }
 
