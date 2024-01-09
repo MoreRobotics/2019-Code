@@ -18,7 +18,6 @@ import frc.robot.Robot;
  * PID!
  */
 public class LiftStates extends Command {
-  private final double m_setpoint;
 
 @Override
 protected boolean isFinished() {
@@ -30,4 +29,4 @@ protected boolean isFinished() {
 
   
   
-}
+
